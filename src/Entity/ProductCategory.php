@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
@@ -15,9 +16,11 @@ class ProductCategory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?bool $status = null;
 
     /**
@@ -30,6 +33,7 @@ class ProductCategory
      * @var Collection<int, ProductCategoryTranslation>
      */
     #[ORM\OneToMany(targetEntity: ProductCategoryTranslation::class, mappedBy: 'productCategory')]
+    #[Groups(['product:read'])]
     private Collection $productCategoryTranslation;
 
     public function __construct()
