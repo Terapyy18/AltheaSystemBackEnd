@@ -7,65 +7,83 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['product:read']],
+)]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?bool $is_published = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['product:read'])]
     private ?string $thumbnail = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?float $weight = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?float $height = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?float $length = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['product:read'])]
     private ?float $promo_price = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?\DateTime $create_at = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?int $priority = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?int $stock = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['product:read'])]
     private ?string $sku = null;
 
     /**
      * @var Collection<int, ProductCategory>
      */
     #[ORM\ManyToMany(targetEntity: ProductCategory::class, mappedBy: 'product')]
+    #[Groups(['product:read'])]
     private Collection $productCategories;
 
     /**
      * @var Collection<int, ProductImages>
      */
     #[ORM\OneToMany(targetEntity: ProductImages::class, mappedBy: 'product')]
+    #[Groups(['product:read'])]
     private Collection $productImages;
 
     /**
      * @var Collection<int, ProductTranslation>
      */
     #[ORM\OneToMany(targetEntity: ProductTranslation::class, mappedBy: 'product')]
+    #[Groups(['product:read'])]
     private Collection $productTranslation;
 
     /**
@@ -164,7 +182,7 @@ class Product
         return $this->promo_price;
     }
 
-    public function setPromoPrice(float $promo_price): static
+    public function setPromoPrice(?float $promo_price): static
     {
         $this->promo_price = $promo_price;
 

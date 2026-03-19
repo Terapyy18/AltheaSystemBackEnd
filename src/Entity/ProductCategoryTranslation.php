@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProductCategoryTranslationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: ProductCategoryTranslationRepository::class)]
@@ -13,15 +14,19 @@ class ProductCategoryTranslation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['product:read'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['product:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['product:read'])]
     private ?string $language = null;
 
     #[ORM\ManyToOne(inversedBy: 'productCategoryTranslation')]
