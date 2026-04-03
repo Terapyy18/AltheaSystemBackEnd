@@ -270,7 +270,7 @@ class ProductFixtures extends Fixture
             $product->setHeight($data['height']);
             $product->setLength($data['length']);
             $product->setIsPublished(true);
-            $product->setCreateAt(new \DateTime());
+            $product->setCreateAt(new \DateTimeImmutable());
 
             // Ajouter les catégories
             foreach ($data['categories'] as $catName) {

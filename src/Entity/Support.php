@@ -31,7 +31,7 @@ class Support
     private ?string $reply = null;
 
     #[ORM\ManyToOne(inversedBy: 'support')]
-    private ?User $iduser = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -98,14 +98,14 @@ class Support
         return $this;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->iduser;
+        return $this->user;
     }
 
-    public function setIdUser(?User $iduser): static
+    public function setUser(?User $user): static
     {
-        $this->iduser = $iduser;
+        $this->user = $user;
 
         return $this;
     }

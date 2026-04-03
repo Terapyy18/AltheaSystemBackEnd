@@ -2,20 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
+use App\Service\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
-use ApiPlatform\Metadata\Delete;
-use App\Service\UserPasswordHasher;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -85,21 +85,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Addresses>
      */
-    #[ORM\OneToMany(targetEntity: Addresses::class, mappedBy: 'iduser')]
+    #[ORM\OneToMany(targetEntity: Addresses::class, mappedBy: 'user')]
     #[Groups(['user:read'])]
     private Collection $addresses;
 
     /**
      * @var Collection<int, Order>
      */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'iduser')]
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     #[Groups(['user:read'])]
     private Collection $orders;
 
     /**
      * @var Collection<int, Support>
      */
-    #[ORM\OneToMany(targetEntity: Support::class, mappedBy: 'iduser')]
+    #[ORM\OneToMany(targetEntity: Support::class, mappedBy: 'user')]
     #[Groups(['user:read'])]
     private Collection $support;
 
@@ -250,7 +250,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->addresses->contains($address)) {
             $this->addresses->add($address);
-            $address->setIdUser($this);
+            $address->setUser($this);
         }
 
         return $this;
@@ -259,8 +259,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAddress(Addresses $address): static
     {
         if ($this->addresses->removeElement($address)) {
-            if ($address->getIdUser() === $this) {
-                $address->setIdUser(null);
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
             }
         }
 
@@ -279,7 +279,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->orders->contains($order)) {
             $this->orders->add($order);
-            $order->setIdUser($this);
+            $order->setUser($this);
         }
 
         return $this;
@@ -288,8 +288,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeOrder(Order $order): static
     {
         if ($this->orders->removeElement($order)) {
-            if ($order->getIdUser() === $this) {
-                $order->setIdUser(null);
+            if ($order->getUser() === $this) {
+                $order->setUser(null);
             }
         }
 
@@ -308,7 +308,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->support->contains($support)) {
             $this->support->add($support);
-            $support->setIdUser($this);
+            $support->setUser($this);
         }
 
         return $this;
@@ -317,8 +317,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeSupport(Support $support): static
     {
         if ($this->support->removeElement($support)) {
-            if ($support->getIdUser() === $this) {
-                $support->setIdUser(null);
+            if ($support->getUser() === $this) {
+                $support->setUser(null);
             }
         }
 

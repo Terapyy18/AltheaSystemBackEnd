@@ -7,10 +7,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
-use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['product:read']]),
+        new GetCollection(normalizationContext: ['groups' => ['product:read']]),
+        new Post(denormalizationContext: ['groups' => ['product:write']]),
+        new Put(denormalizationContext: ['groups' => ['product:write']]),
+        new Delete(),
+    ],
     normalizationContext: ['groups' => ['product:read']],
+    denormalizationContext: ['groups' => ['product:write']],
 )]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -22,82 +36,102 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['product:read'])]
-    private ?bool $is_published = null;
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotNull]
+    private ?bool $is_published = false;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotBlank]
     private ?string $thumbnail = null;
 
     #[ORM\Column]
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotNull]
+    #[Assert\Positive]
     private ?float $weight = null;
 
     #[ORM\Column]
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotNull]
+    #[Assert\Positive]
     private ?float $height = null;
 
     #[ORM\Column]
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotNull]
+    #[Assert\Positive]
     private ?float $length = null;
 
     #[ORM\Column]
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotNull]
+    #[Assert\Positive]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\Positive]
     private ?float $promo_price = null;
 
     #[ORM\Column]
     #[Groups(['product:read'])]
-    private ?\DateTime $create_at = null;
+    private ?\DateTimeImmutable $create_at = null;
 
     #[ORM\Column]
-    #[Groups(['product:read'])]
-    private ?int $priority = null;
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotNull]
+    #[Assert\PositiveOrZero]
+    private ?int $priority = 0;
 
     #[ORM\Column]
-    #[Groups(['product:read'])]
-    private ?int $stock = null;
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotNull]
+    #[Assert\PositiveOrZero]
+    private ?int $stock = 0;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotBlank]
     private ?string $sku = null;
 
     /**
      * @var Collection<int, ProductCategory>
      */
-    #[ORM\ManyToMany(targetEntity: ProductCategory::class, mappedBy: 'product')]
-    #[Groups(['product:read'])]
+    #[ORM\ManyToMany(targetEntity: ProductCategory::class, inversedBy: 'products')]
+    #[ORM\JoinTable(name: 'product_product_category')]
+    #[Groups(['product:read', 'product:write'])]
     private Collection $productCategories;
 
     /**
      * @var Collection<int, ProductImages>
      */
-    #[ORM\OneToMany(targetEntity: ProductImages::class, mappedBy: 'product')]
-    #[Groups(['product:read'])]
+    #[ORM\OneToMany(targetEntity: ProductImages::class, mappedBy: 'product', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['product:read', 'product:write'])]
     private Collection $productImages;
 
     /**
      * @var Collection<int, ProductTranslation>
      */
-    #[ORM\OneToMany(targetEntity: ProductTranslation::class, mappedBy: 'product')]
-    #[Groups(['product:read'])]
-    private Collection $productTranslation;
+    #[ORM\OneToMany(targetEntity: ProductTranslation::class, mappedBy: 'product', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\Valid]
+    #[Assert\Count(min: 1, minMessage: 'Un produit doit avoir au moins une traduction')]
+    private Collection $productTranslations;
 
     /**
      * @var Collection<int, ItemsOrder>
      */
     #[ORM\OneToMany(targetEntity: ItemsOrder::class, mappedBy: 'product')]
-    private Collection $itemsOrder;
+    private Collection $itemsOrders;
 
     public function __construct()
     {
         $this->productCategories = new ArrayCollection();
         $this->productImages = new ArrayCollection();
-        $this->productTranslation = new ArrayCollection();
-        $this->itemsOrder = new ArrayCollection();
+        $this->productTranslations = new ArrayCollection();
+        $this->itemsOrders = new ArrayCollection();
+        $this->create_at = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -113,7 +147,6 @@ class Product
     public function setIsPublished(bool $is_published): static
     {
         $this->is_published = $is_published;
-
         return $this;
     }
 
@@ -125,7 +158,6 @@ class Product
     public function setThumbnail(string $thumbnail): static
     {
         $this->thumbnail = $thumbnail;
-
         return $this;
     }
 
@@ -137,7 +169,6 @@ class Product
     public function setWeight(float $weight): static
     {
         $this->weight = $weight;
-
         return $this;
     }
 
@@ -149,7 +180,6 @@ class Product
     public function setHeight(float $height): static
     {
         $this->height = $height;
-
         return $this;
     }
 
@@ -161,7 +191,6 @@ class Product
     public function setLength(float $length): static
     {
         $this->length = $length;
-
         return $this;
     }
 
@@ -173,7 +202,6 @@ class Product
     public function setPrice(float $price): static
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -185,19 +213,17 @@ class Product
     public function setPromoPrice(?float $promo_price): static
     {
         $this->promo_price = $promo_price;
-
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTime
+    public function getCreateAt(): ?\DateTimeImmutable
     {
         return $this->create_at;
     }
 
-    public function setCreateAt(\DateTime $create_at): static
+    public function setCreateAt(\DateTimeImmutable $create_at): static
     {
         $this->create_at = $create_at;
-
         return $this;
     }
 
@@ -209,7 +235,6 @@ class Product
     public function setPriority(int $priority): static
     {
         $this->priority = $priority;
-
         return $this;
     }
 
@@ -221,7 +246,6 @@ class Product
     public function setStock(int $stock): static
     {
         $this->stock = $stock;
-
         return $this;
     }
 
@@ -233,7 +257,6 @@ class Product
     public function setSku(string $sku): static
     {
         $this->sku = $sku;
-
         return $this;
     }
 
@@ -249,18 +272,13 @@ class Product
     {
         if (!$this->productCategories->contains($productCategory)) {
             $this->productCategories->add($productCategory);
-            $productCategory->addProduct($this);
         }
-
         return $this;
     }
 
     public function removeProductCategory(ProductCategory $productCategory): static
     {
-        if ($this->productCategories->removeElement($productCategory)) {
-            $productCategory->removeProduct($this);
-        }
-
+        $this->productCategories->removeElement($productCategory);
         return $this;
     }
 
@@ -278,79 +296,70 @@ class Product
             $this->productImages->add($productImage);
             $productImage->setProduct($this);
         }
-
         return $this;
     }
 
     public function removeProductImage(ProductImages $productImage): static
     {
         if ($this->productImages->removeElement($productImage)) {
-            // set the owning side to null (unless already changed)
             if ($productImage->getProduct() === $this) {
                 $productImage->setProduct(null);
             }
         }
-
         return $this;
     }
 
     /**
      * @return Collection<int, ProductTranslation>
      */
-    public function getProductTranslation(): Collection
+    public function getProductTranslations(): Collection
     {
-        return $this->productTranslation;
+        return $this->productTranslations;
     }
 
     public function addProductTranslation(ProductTranslation $productTranslation): static
     {
-        if (!$this->productTranslation->contains($productTranslation)) {
-            $this->productTranslation->add($productTranslation);
+        if (!$this->productTranslations->contains($productTranslation)) {
+            $this->productTranslations->add($productTranslation);
             $productTranslation->setProduct($this);
         }
-
         return $this;
     }
 
     public function removeProductTranslation(ProductTranslation $productTranslation): static
     {
-        if ($this->productTranslation->removeElement($productTranslation)) {
-            // set the owning side to null (unless already changed)
+        if ($this->productTranslations->removeElement($productTranslation)) {
             if ($productTranslation->getProduct() === $this) {
                 $productTranslation->setProduct(null);
             }
         }
-
         return $this;
     }
 
     /**
      * @return Collection<int, ItemsOrder>
      */
-    public function getItemsOrder(): Collection
+    public function getItemsOrders(): Collection
     {
-        return $this->itemsOrder;
+        return $this->itemsOrders;
     }
 
     public function addItemsOrder(ItemsOrder $itemsOrder): static
     {
-        if (!$this->itemsOrder->contains($itemsOrder)) {
-            $this->itemsOrder->add($itemsOrder);
+        if (!$this->itemsOrders->contains($itemsOrder)) {
+            $this->itemsOrders->add($itemsOrder);
             $itemsOrder->setProduct($this);
         }
-
         return $this;
     }
 
     public function removeItemsOrder(ItemsOrder $itemsOrder): static
     {
-        if ($this->itemsOrder->removeElement($itemsOrder)) {
-            // set the owning side to null (unless already changed)
+        if ($this->itemsOrders->removeElement($itemsOrder)) {
             if ($itemsOrder->getProduct() === $this) {
                 $itemsOrder->setProduct(null);
             }
         }
-
         return $this;
     }
 }

@@ -2,61 +2,82 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
+#[ApiResource(
+    normalizationContext: ['groups' => ['order:read']],
+    denormalizationContext: ['groups' => ['order:write']],
+)]
 class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['order:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['order:read', 'order:write'])]
     private ?string $status = null;
 
-    #[ORM\Column]
-    private ?int $shipping_number = null;
+    #[ORM\Column(name: 'shipping_number', type: Types::INTEGER, nullable: true)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?int $shippingNumber = null;
 
-    #[ORM\Column]
-    private ?\DateTime $created_at = null;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $payed_at = null;
+    #[ORM\Column(name: 'payed_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?\DateTimeInterface $payedAt = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $shipped_at = null;
+    #[ORM\Column(name: 'shipped_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?\DateTimeInterface $shippedAt = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $received_at = null;
+    #[ORM\Column(name: 'received_at', type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?\DateTimeInterface $receivedAt = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $invoice_path = null;
+    #[ORM\Column(name: 'invoice_path', length: 255, nullable: true)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?string $invoicePath = null;
 
-    #[ORM\Column]
-    private ?float $total_price = null;
+    #[ORM\Column(name: 'total_price', type: Types::FLOAT)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?float $totalPrice = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
-    private ?User $iduser = null;
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(targetEntity: Addresses::class)]
+    #[ORM\JoinColumn(name: 'addresses_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['order:read', 'order:write'])]
+    private ?Addresses $addresses = null;
 
     /**
+     * Relation inverse : n'existe pas en colonne dans la table 'order'
      * @var Collection<int, ItemsOrder>
      */
-    #[ORM\OneToMany(targetEntity: ItemsOrder::class, mappedBy: 'idorder')]
-    private Collection $itemsOrder;
-
-    #[ORM\ManyToOne(inversedBy: 'idorder')]
-    private ?Addresses $addresses = null;
+    #[ORM\OneToMany(targetEntity: ItemsOrder::class, mappedBy: 'order')]
+    #[Groups(['order:read'])] // On ne l'affiche qu'en lecture (GET)
+    private Collection $itemsOrders;
 
     public function __construct()
     {
-        $this->itemsOrder = new ArrayCollection();
+        $this->itemsOrders = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -72,133 +93,94 @@ class Order
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
         return $this;
     }
 
     public function getShippingNumber(): ?int
     {
-        return $this->shipping_number;
+        return $this->shippingNumber;
     }
 
-    public function setShippingNumber(int $shipping_number): static
+    public function setShippingNumber(?int $shippingNumber): static
     {
-        $this->shipping_number = $shipping_number;
-
+        $this->shippingNumber = $shippingNumber;
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $created_at): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
-        $this->created_at = $created_at;
-
+        $this->createdAt = $createdAt;
         return $this;
     }
 
-    public function getPayedAt(): ?\DateTime
+    public function getPayedAt(): ?\DateTimeInterface
     {
-        return $this->payed_at;
+        return $this->payedAt;
     }
 
-    public function setPayedAt(?\DateTime $payed_at): static
+    public function setPayedAt(?\DateTimeInterface $payedAt): static
     {
-        $this->payed_at = $payed_at;
-
+        $this->payedAt = $payedAt;
         return $this;
     }
 
-    public function getShippedAt(): ?\DateTime
+    public function getShippedAt(): ?\DateTimeInterface
     {
-        return $this->shipped_at;
+        return $this->shippedAt;
     }
 
-    public function setShippedAt(?\DateTime $shipped_at): static
+    public function setShippedAt(?\DateTimeInterface $shippedAt): static
     {
-        $this->shipped_at = $shipped_at;
-
+        $this->shippedAt = $shippedAt;
         return $this;
     }
 
-    public function getReceivedAt(): ?\DateTime
+    public function getReceivedAt(): ?\DateTimeInterface
     {
-        return $this->received_at;
+        return $this->receivedAt;
     }
 
-    public function setReceivedAt(?\DateTime $received_at): static
+    public function setReceivedAt(?\DateTimeInterface $receivedAt): static
     {
-        $this->received_at = $received_at;
-
+        $this->receivedAt = $receivedAt;
         return $this;
     }
 
     public function getInvoicePath(): ?string
     {
-        return $this->invoice_path;
+        return $this->invoicePath;
     }
 
-    public function setInvoicePath(?string $invoice_path): static
+    public function setInvoicePath(?string $invoicePath): static
     {
-        $this->invoice_path = $invoice_path;
-
+        $this->invoicePath = $invoicePath;
         return $this;
     }
 
     public function getTotalPrice(): ?float
     {
-        return $this->total_price;
+        return $this->totalPrice;
     }
 
-    public function setTotalPrice(float $total_price): static
+    public function setTotalPrice(float $totalPrice): static
     {
-        $this->total_price = $total_price;
-
+        $this->totalPrice = $totalPrice;
         return $this;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->iduser;
+        return $this->user;
     }
 
-    public function setIdUser(?User $iduser): static
+    public function setUser(?User $user): static
     {
-        $this->iduser = $iduser;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ItemsOrder>
-     */
-    public function getItemsOrder(): Collection
-    {
-        return $this->itemsOrder;
-    }
-
-    public function addItemsOrder(ItemsOrder $itemsOrder): static
-    {
-        if (!$this->itemsOrder->contains($itemsOrder)) {
-            $this->itemsOrder->add($itemsOrder);
-            $itemsOrder->setIdOrder($this);
-        }
-
-        return $this;
-    }
-
-    public function removeItemsOrder(ItemsOrder $itemsOrder): static
-    {
-        if ($this->itemsOrder->removeElement($itemsOrder)) {
-            // set the owning side to null (unless already changed)
-            if ($itemsOrder->getIdOrder() === $this) {
-                $itemsOrder->setIdOrder(null);
-            }
-        }
-
+        $this->user = $user;
         return $this;
     }
 
@@ -210,7 +192,33 @@ class Order
     public function setAddresses(?Addresses $addresses): static
     {
         $this->addresses = $addresses;
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, ItemsOrder>
+     */
+    public function getItemsOrders(): Collection
+    {
+        return $this->itemsOrders;
+    }
+
+    public function addItemsOrder(ItemsOrder $itemsOrder): static
+    {
+        if (!$this->itemsOrders->contains($itemsOrder)) {
+            $this->itemsOrders->add($itemsOrder);
+            $itemsOrder->setOrder($this);
+        }
+        return $this;
+    }
+
+    public function removeItemsOrder(ItemsOrder $itemsOrder): static
+    {
+        if ($this->itemsOrders->removeElement($itemsOrder)) {
+            if ($itemsOrder->getOrder() === $this) {
+                $itemsOrder->setOrder(null);
+            }
+        }
         return $this;
     }
 }

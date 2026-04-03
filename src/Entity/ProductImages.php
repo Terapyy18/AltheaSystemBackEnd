@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ProductImagesRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource]
 #[ORM\Entity(repositoryClass: ProductImagesRepository::class)]
@@ -13,12 +15,17 @@ class ProductImages
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $image_url = null;
+    #[Groups(['product:read', 'product:write'])]
+    #[Assert\NotBlank]
+    #[Assert\Url]
+    private ?string $imageUrl = null;
 
     #[ORM\ManyToOne(inversedBy: 'productImages')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
 
     public function getId(): ?int
@@ -28,13 +35,12 @@ class ProductImages
 
     public function getImageUrl(): ?string
     {
-        return $this->image_url;
+        return $this->imageUrl;
     }
 
-    public function setImageUrl(string $image_url): static
+    public function setImageUrl(string $imageUrl): static
     {
-        $this->image_url = $image_url;
-
+        $this->imageUrl = $imageUrl;
         return $this;
     }
 
@@ -46,7 +52,6 @@ class ProductImages
     public function setProduct(?Product $product): static
     {
         $this->product = $product;
-
         return $this;
     }
 }
