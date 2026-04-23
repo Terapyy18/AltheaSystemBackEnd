@@ -116,4 +116,13 @@ class ProductCategory
         }
         return $this;
     }
+
+    public function __toString(): string
+    {
+        if (!$this->productCategoryTranslations->isEmpty()) {
+            return $this->productCategoryTranslations->first()->getTitle() ?? 'Sans nom';
+        }
+
+        return 'Catégorie #' . $this->id;
+    }
 }

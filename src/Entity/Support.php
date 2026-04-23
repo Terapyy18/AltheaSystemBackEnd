@@ -109,4 +109,9 @@ class Support
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return sprintf('Ticket #%d: %s', $this->id, $this->title) ?? 'Nouveau ticket';
+    }
 }

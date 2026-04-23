@@ -221,4 +221,8 @@ class Order
         }
         return $this;
     }
+
+    public function __toString(): string {
+        return 'Commande #' . $this->id; 
+    }
 }

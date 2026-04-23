@@ -362,4 +362,19 @@ class Product
         }
         return $this;
     }
+
+    
+
+    // src/Entity/Product.php
+
+    public function __toString(): string
+    {
+        // On essaie de récupérer le SKU qui est unique et présent dans Product
+        return $this->sku ?? 'Produit sans SKU';
+
+        if (!$this->productTranslations->isEmpty()) {
+            return $this->productTranslations->first()->getTitle();
+        }
+        return 'Produit #' . $this->id;
+    }
 }

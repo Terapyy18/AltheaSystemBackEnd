@@ -18,7 +18,9 @@ class ProductImages
     #[Groups(['product:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    
+    
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['product:read', 'product:write'])]
     #[Assert\NotBlank]
     #[Assert\Url]
@@ -53,5 +55,10 @@ class ProductImages
     {
         $this->product = $product;
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->imageUrl ?? 'Image sans URL';
     }
 }
