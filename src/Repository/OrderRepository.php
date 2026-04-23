@@ -16,28 +16,28 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-//    /**
-//     * @return Order[] Returns an array of Order objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function countThisMonth(int $month, int $year): int
+    {
+        return (int) $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->where('MONTH(o.createdAt) = :month AND YEAR(o.createdAt) = :year')
+            ->setParameters(['month' => $month, 'year' => $year])
+            ->getQuery()->getSingleScalarResult();
+    }
 
-//    public function findOneBySomeField($value): ?Order
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function ordersLast7Days(): array
+    {
+        $raw = $this->createQueryBuilder('o')
+            ->select('DATE(o.createdAt) AS day, COUNT(o.id) AS total')
+            ->where('o.createdAt >= :start')
+            ->setParameter('start', new \DateTime('-7 days'))
+            ->groupBy('day')
+            ->orderBy('day', 'ASC')
+            ->getQuery()->getResult();
+
+        return array_map(fn($r) => [
+            'label' => (new \DateTime($r['day']))->format('D'),
+            'total' => (int) $r['total'],
+        ], $raw);
+    }
 }

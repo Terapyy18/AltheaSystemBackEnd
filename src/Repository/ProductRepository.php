@@ -16,6 +16,15 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function criticalStock(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id, p.name, p.reference, p.stock, p.stockThreshold')
+            ->where('p.stock <= p.stockThreshold')
+            ->orderBy('p.stock', 'ASC')
+            ->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */

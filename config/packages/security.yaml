@@ -29,6 +29,7 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
         - { path: ^/api, roles: PUBLIC_ACCESS }
+        - { path: '^/api/stats', roles: PUBLIC_ACCESS }
 
 when@test:
     security:
