@@ -24,14 +24,13 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('AltheaSystemBackEnd');
+            ->setTitle('AltheaSystem');
     }
 
 
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
 
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkTo(UserCrudController::class, 'Utilisateurs', 'fas fa-users')->setAction('index');
@@ -40,16 +39,21 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Catalogue');
         yield MenuItem::linkTo(ProductCrudController::class, 'Produits', 'fas fa-box')->setAction('index');
         yield MenuItem::linkTo(ProductCategoryCrudController::class, 'Catégories', 'fas fa-tags')->setAction('index');
-        yield MenuItem::linkTo(ProductTranslationCrudController::class, 'Traductions Produits', 'fas fa-language')->setAction('index');
-        yield MenuItem::linkTo(ProductCategoryTranslationCrudController::class, 'Traductions Catégories', 'fas fa-globe')->setAction('index');
-        yield MenuItem::linkTo(ProductImagesCrudController::class, 'Galerie Photos', 'fas fa-images')->setAction('index');
+        //yield MenuItem::linkTo(ProductTranslationCrudController::class, 'Traductions Produits', 'fas fa-language')->setAction('index');
+        //yield MenuItem::linkTo(ProductCategoryTranslationCrudController::class, 'Traductions Catégories', 'fas fa-globe')->setAction('index');
+        //yield MenuItem::linkTo(ProductImagesCrudController::class, 'Galerie Photos', 'fas fa-images')->setAction('index');
 
         yield MenuItem::section('Ventes');
         yield MenuItem::linkTo(OrderCrudController::class, 'Commandes', 'fas fa-shopping-bag')->setAction('index');
         yield MenuItem::linkTo(ItemsOrderCrudController::class, 'Lignes de Commande', 'fas fa-list')->setAction('index');
 
         yield MenuItem::section('Assistance');
-        yield MenuItem::linkTo(SupportCrudController::class, 'Support Client', 'fas fa-headset')->setAction('index');
+        //yield MenuItem::linkTo(SupportCrudController::class, 'Support Client', 'fas fa-headset')->setAction('index');
+        yield MenuItem::linkToRoute('Support Client', 'fas fa-headset', 'admin_tickets_index');
 
+
+        yield MenuItem::section('Systéme');
+        yield MenuItem::linkToUrl('Retour au site', 'fas fa-arrow-left', 'http://localhost:3000');
+        
     }
 }

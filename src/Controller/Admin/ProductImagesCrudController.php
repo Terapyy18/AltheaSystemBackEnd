@@ -21,18 +21,18 @@ class ProductImagesCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
 
-            // Aperçu visuel en index/détail uniquement
+            
             ImageField::new('imageUrl', 'Aperçu')
                 ->setBasePath('')
                 ->hideOnForm(),
 
-            // Saisie URL dans le formulaire
+            
             UrlField::new('imageUrl', 'URL de l\'image')
                 ->onlyOnForms()
                 ->setRequired(true)
                 ->setHelp('Entrez l\'URL complète (ex: https://...)'),
 
-            // Masquer l'association quand utilisé en sous-formulaire depuis Product
+            
             AssociationField::new('product', 'Produit associé')
                 ->hideOnForm(),
         ];

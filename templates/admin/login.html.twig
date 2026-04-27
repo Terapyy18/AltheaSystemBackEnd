@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5; /* Fond clair gris bleuté */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-box {
+            background: #ffffff; /* Boîte blanche */
+            padding: 40px;
+            border-radius: 10px;
+            width: 380px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* Ombre plus douce */
+            border: 1px solid #e1e4e8;
+        }
+        h1 { color: #1a1a2e; text-align: center; margin-bottom: 8px; font-size: 22px; }
+        p.subtitle { color: #65676b; text-align: center; margin-bottom: 30px; font-size: 13px; }
+        label { color: #4b4b4b; font-size: 13px; display: block; margin-bottom: 5px; font-weight: bold; }
+        input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid #dddfe2; /* Bordure claire */
+            background: #f5f6f7; /* Fond input léger */
+            color: #1c1e21;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+        input:focus { outline: none; border-color: #3498db; background: #fff; }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3498db; /* Bleu Althea */
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover { background: #2980b9; }
+        .error {
+            background: #ffebe8; /* Fond rouge clair */
+            color: #d8000c; /* Texte rouge erreur */
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            text-align: center;
+            border: 1px solid #dd3c104d;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1><i class="fas fa-lock"></i> AltheaSystem</h1>
+        <p class="subtitle">Accès réservé aux administrateurs</p>
+
+        {% for message in app.flashes('error') %}
+            <div class="error" style="background: #fff5f5; color: #c53030; border: 1px solid #feb2b2;">
+                <i class="fas fa-user-shield"></i> {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if error %}
+            <div class="error">
+                <i class="fas fa-exclamation-triangle"></i> {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email"
+                   value="{{ last_username }}" autocomplete="email" required autofocus>
+
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password"
+                   autocomplete="current-password" required>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit">
+                <i class="fas fa-sign-in-alt"></i> Se connecter
+            </button>
+        </form>
+    </div>
+</body>
+</html>
