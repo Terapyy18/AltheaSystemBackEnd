@@ -35,6 +35,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkTo(UserCrudController::class, 'Utilisateurs', 'fas fa-users')->setAction('index');
         yield MenuItem::linkTo(AddressesCrudController::class, 'Adresses', 'fas fa-map-marker-alt')->setAction('index');
+        yield MenuItem::linkToRoute('Statistiques', 'fas fa-chart-bar', 'admin_stats');
+        
 
         yield MenuItem::section('Catalogue');
         yield MenuItem::linkTo(ProductCrudController::class, 'Produits', 'fas fa-box')->setAction('index');
