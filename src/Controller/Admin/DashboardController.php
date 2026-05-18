@@ -39,9 +39,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Catalogue');
         yield MenuItem::linkTo(ProductCrudController::class, 'Produits', 'fas fa-box')->setAction('index');
         yield MenuItem::linkTo(ProductCategoryCrudController::class, 'Catégories', 'fas fa-tags')->setAction('index');
-        //yield MenuItem::linkTo(ProductTranslationCrudController::class, 'Traductions Produits', 'fas fa-language')->setAction('index');
-        //yield MenuItem::linkTo(ProductCategoryTranslationCrudController::class, 'Traductions Catégories', 'fas fa-globe')->setAction('index');
-        //yield MenuItem::linkTo(ProductImagesCrudController::class, 'Galerie Photos', 'fas fa-images')->setAction('index');
+        yield MenuItem::linkTo(ProductTranslationCrudController::class, 'Traductions Produits', 'fas fa-language')->setAction('index');
+        yield MenuItem::linkTo(ProductCategoryTranslationCrudController::class, 'Traductions Catégories', 'fas fa-globe')->setAction('index');
+        yield MenuItem::linkTo(ProductImagesCrudController::class, 'Galerie Photos', 'fas fa-images')->setAction('index');
 
         yield MenuItem::section('Ventes');
         yield MenuItem::linkTo(OrderCrudController::class, 'Commandes', 'fas fa-shopping-bag')->setAction('index');

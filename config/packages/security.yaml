@@ -14,7 +14,7 @@ security:
             security: false
 
         admin:
-            pattern: ^/admin
+            pattern: ^/(admin|2fa)
             lazy: true
             stateless: false
             provider: app_user_provider
@@ -25,6 +25,10 @@ security:
                 username_parameter: email
                 password_parameter: password
                 failure_path: admin_login
+            two_factor:
+                auth_form_path: 2fa_login
+                check_path: 2fa_check
+                default_target_path: admin
             logout:
                 path: admin_logout
                 target: admin_login
@@ -45,6 +49,7 @@ security:
     access_control:
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin/logout, roles: PUBLIC_ACCESS }
+        - { path: ^/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }

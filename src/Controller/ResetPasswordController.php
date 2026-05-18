@@ -26,7 +26,7 @@ class ResetPasswordController extends AbstractController
         private EntityManagerInterface $entityManager,
     ) {}
 
-    // ÉTAPE 1 : Demande de réinitialisation → envoie le mail
+    
     #[Route('', name: 'request', methods: ['POST'])]
     public function request(Request $request, MailerInterface $mailer): JsonResponse
     {
@@ -39,7 +39,7 @@ class ResetPasswordController extends AbstractController
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
-        // Toujours répondre OK pour ne pas révéler si l'email existe
+        
         if (!$user) {
             return $this->json(['message' => 'Si cet email existe, un lien de réinitialisation a été envoyé.']);
         }
@@ -66,7 +66,7 @@ class ResetPasswordController extends AbstractController
         return $this->json(['message' => 'Si cet email existe, un lien de réinitialisation a été envoyé.']);
     }
 
-    // ÉTAPE 2 : Réinitialisation avec le token reçu par mail
+     
     #[Route('/{token}', name: 'reset', methods: ['POST'])]
     public function reset(
         string $token,
