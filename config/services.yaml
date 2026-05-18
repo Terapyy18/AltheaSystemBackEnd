@@ -11,3 +11,10 @@ services:
     App\Service\UserPasswordHasher:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\EventSubscriber\AdminLoginSubscriber:
+        arguments:
+            $router: '@router'
+            $requestStack: '@request_stack'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -1,0 +1,8 @@
+scheb_two_factor:
+    email:
+        enabled: true
+        sender_email: noreply@altheasystem.com
+        sender_name: "Althea System"
+        digits: 6
+        mailer : App\Security\TwoFactorMailer
+        template: security/2fa_form.html.twig

@@ -24,14 +24,13 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('AltheaSystemBackEnd');
+            ->setTitle('AltheaSystem');
     }
 
 
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
 
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkTo(UserCrudController::class, 'Utilisateurs', 'fas fa-users')->setAction('index');
@@ -49,9 +48,12 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(ItemsOrderCrudController::class, 'Lignes de Commande', 'fas fa-list')->setAction('index');
 
         yield MenuItem::section('Assistance');
-        yield MenuItem::linkTo(SupportCrudController::class, 'Support Client', 'fas fa-headset')->setAction('index');
+        //yield MenuItem::linkTo(SupportCrudController::class, 'Support Client', 'fas fa-headset')->setAction('index');
+        yield MenuItem::linkToRoute('Support Client', 'fas fa-headset', 'admin_tickets_index');
 
-        yield MenuItem::linkToRoute('Statistiques', 'fa fa-chart-bar', 'admin_stats');
 
+        yield MenuItem::section('Systéme');
+        yield MenuItem::linkToUrl('Retour au site', 'fas fa-arrow-left', 'http://localhost:3000');
+        
     }
 }

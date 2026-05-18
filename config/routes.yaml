@@ -7,3 +7,11 @@ controllers:
 api_login:
     path: /api/login
     methods: [POST]
+
+2fa_login:
+    path: /2fa
+    defaults:
+        _controller: "scheb_two_factor.form_controller::form"
+
+2fa_check:
+    path: /2fa/check
