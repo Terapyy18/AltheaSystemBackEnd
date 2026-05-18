@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Échec du paiement - Commande #{{ order.id }}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f3f4f6;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f3f4f6;padding:24px 0;">
+    <tr>
+        <td align="center">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;background-color:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+                <tr>
+                    <td style="background-color:#0d9488;padding:24px 32px;color:#ffffff;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td style="font-size:20px;font-weight:bold;letter-spacing:0.5px;">Althea Systems</td>
+                                <td align="right" style="font-size:13px;opacity:0.9;">Commande #{{ order.id }}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:32px;">
+                        <h1 style="margin:0 0 12px 0;font-size:22px;color:#b91c1c;">
+                            Votre paiement n'a pas pu être validé
+                        </h1>
+                        <p style="margin:0 0 16px 0;font-size:15px;line-height:1.5;color:#374151;">
+                            Bonjour{% if user.firstName %} {{ user.firstName }}{% endif %},
+                        </p>
+
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#fef2f2;border:1px solid #fecaca;border-radius:8px;margin-bottom:20px;">
+                            <tr>
+                                <td style="padding:14px 18px;">
+                                    <p style="margin:0 0 4px 0;font-size:12px;font-weight:bold;text-transform:uppercase;color:#b91c1c;letter-spacing:0.5px;">Raison communiquée par votre banque</p>
+                                    <p style="margin:0;font-size:14px;line-height:1.5;color:#7f1d1d;">{{ reason }}</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin:0 0 24px 0;font-size:15px;line-height:1.5;color:#374151;">
+                            Aucun montant n'a été débité. Vous pouvez réessayer le paiement avec la même carte ou un autre moyen de paiement.
+                        </p>
+
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:16px;">
+                            <tr>
+                                <td align="center">
+                                    <a href="{{ retry_url }}"
+                                       style="display:inline-block;background-color:#0d9488;color:#ffffff;text-decoration:none;padding:12px 28px;border-radius:9999px;font-size:15px;font-weight:bold;letter-spacing:0.3px;">
+                                        Réessayer le paiement
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin:0;font-size:12px;color:#6b7280;line-height:1.5;">
+                            Si le problème persiste, contactez votre banque ou notre service client.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:#f9fafb;padding:16px 32px;text-align:center;font-size:11px;color:#9ca3af;border-top:1px solid #e5e7eb;">
+                        © Althea Systems — Cet email vous est envoyé suite à un échec de paiement.
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

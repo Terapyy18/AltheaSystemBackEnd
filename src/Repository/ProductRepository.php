@@ -18,11 +18,22 @@ class ProductRepository extends ServiceEntityRepository
 
     public function criticalStock(): array
     {
-        return $this->createQueryBuilder('p')
-            ->select('p.id, p.name, p.reference, p.stock, p.stockThreshold')
-            ->where('p.stock <= p.stockThreshold')
+        $raw = $this->createQueryBuilder('p')
+            ->select('p.id, p.sku, p.stock, pt.title AS name')
+            ->leftJoin('p.productTranslations', 'pt', 'WITH', 'pt.language = :lang')
+            ->setParameter('lang', 'fr')
+            ->where('p.stock <= :threshold')
+            ->setParameter('threshold', 5) // adapte ce seuil selon ton besoin
             ->orderBy('p.stock', 'ASC')
-            ->getQuery()->getResult();
+            ->getQuery()
+            ->getResult();
+
+        return array_map(fn($r) => [
+            'name'           => $r['name'] ?? $r['sku'],
+            'reference'      => $r['sku'],
+            'stock'          => $r['stock'],
+            'stockThreshold' => 5, // même valeur que ci-dessus
+        ], $raw);
     }
 
 //    /**

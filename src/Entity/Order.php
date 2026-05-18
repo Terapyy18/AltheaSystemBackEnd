@@ -56,6 +56,18 @@ class Order
     #[Groups(['order:read', 'order:write'])]
     private ?float $totalPrice = null;
 
+    #[ORM\Column(name: 'stripe_session_id', length: 255, nullable: true, unique: true)]
+    #[Groups(['order:read'])]
+    private ?string $stripeSessionId = null;
+
+    #[ORM\Column(name: 'stock_decremented', type: Types::BOOLEAN, options: ['default' => false])]
+    #[Groups(['order:read'])]
+    private bool $stockDecremented = false;
+
+    #[ORM\Column(name: 'stripe_payment_intent_id', length: 255, nullable: true, unique: true)]
+    #[Groups(['order:read'])]
+    private ?string $stripePaymentIntentId = null;
+
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     #[Groups(['order:read', 'order:write'])]
@@ -170,6 +182,39 @@ class Order
     public function setTotalPrice(float $totalPrice): static
     {
         $this->totalPrice = $totalPrice;
+        return $this;
+    }
+
+    public function getStripeSessionId(): ?string
+    {
+        return $this->stripeSessionId;
+    }
+
+    public function setStripeSessionId(?string $stripeSessionId): static
+    {
+        $this->stripeSessionId = $stripeSessionId;
+        return $this;
+    }
+
+    public function isStockDecremented(): bool
+    {
+        return $this->stockDecremented;
+    }
+
+    public function setStockDecremented(bool $stockDecremented): static
+    {
+        $this->stockDecremented = $stockDecremented;
+        return $this;
+    }
+
+    public function getStripePaymentIntentId(): ?string
+    {
+        return $this->stripePaymentIntentId;
+    }
+
+    public function setStripePaymentIntentId(?string $stripePaymentIntentId): static
+    {
+        $this->stripePaymentIntentId = $stripePaymentIntentId;
         return $this;
     }
 

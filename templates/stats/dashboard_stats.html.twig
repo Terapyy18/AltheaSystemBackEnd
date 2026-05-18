@@ -1,0 +1,387 @@
+{# templates/admin/dashboard.html.twig #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.dash {
+    font-family: 'DM Sans', sans-serif;
+    color: #1a1a1a;
+    padding: 0 0 2rem;
+}
+
+/* ── KPI row ── */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.kpi {
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+.kpi:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,.07);
+    transform: translateY(-2px);
+}
+.kpi::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 14px 14px 0 0;
+}
+.kpi:nth-child(1)::before { background: #185FA5; }
+.kpi:nth-child(2)::before { background: #1D9E75; }
+.kpi:nth-child(3)::before { background: #7C3AED; }
+
+.kpi label {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #9a9a9a;
+    display: block;
+    margin-bottom: 10px;
+}
+.kpi strong {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+    color: #111;
+    line-height: 1;
+}
+
+/* ── Cards ── */
+.chart-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.card {
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1.1rem;
+}
+
+.card-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.card-header h3 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: #888;
+}
+
+.chart-wrap {
+    position: relative;
+    height: 200px;
+}
+
+/* ── Table ── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+thead th {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: #aaa;
+    padding: 0 0 10px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+}
+tbody td {
+    padding: 11px 0;
+    border-bottom: 1px solid #f7f7f7;
+    color: #2a2a2a;
+    vertical-align: middle;
+}
+tbody tr:last-child td { border-bottom: none; }
+
+code {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    background: #f4f4f4;
+    color: #555;
+    padding: 2px 7px;
+    border-radius: 5px;
+}
+
+/* ── Badges ── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .02em;
+}
+.badge::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.badge-red   { background: #FEF2F2; color: #B91C1C; }
+.badge-red::before   { background: #EF4444; }
+.badge-amber { background: #FFFBEB; color: #92400E; }
+.badge-amber::before { background: #F59E0B; }
+.badge-green { background: #F0FDF4; color: #166534; }
+.badge-green::before { background: #22C55E; }
+
+/* ── Empty state ── */
+.empty {
+    font-size: 13px;
+    color: #bbb;
+    padding: 1rem 0;
+    text-align: center;
+    font-style: italic;
+}
+</style>
+
+<div class="dash">
+
+    {# ── KPIs ── #}
+    <div class="kpi-grid">
+        <div class="kpi">
+            <label>Produits vendus ce mois</label>
+            <strong>{{ kpis.total_sold }}</strong>
+        </div>
+        <div class="kpi">
+            <label>Chiffre d'affaires</label>
+            <strong>{{ kpis.revenue|number_format(2, ',', ' ') }} €</strong>
+        </div>
+        <div class="kpi">
+            <label>Commandes</label>
+            <strong>{{ kpis.orders }}</strong>
+        </div>
+    </div>
+
+    {# ── Charts ── #}
+    <div class="chart-col">
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-dot" style="background:#185FA5"></span>
+                <h3>Ventes mensuelles — 12 mois</h3>
+            </div>
+            <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-dot" style="background:#1D9E75"></span>
+                <h3>Commandes — 7 derniers jours</h3>
+            </div>
+            <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-dot" style="background:#7C3AED"></span>
+                <h3>Top 5 produits ce mois</h3>
+            </div>
+            <div class="chart-wrap"><canvas id="topChart"></canvas></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-dot" style="background:#BA7517"></span>
+                <h3>Ventes par catégorie</h3>
+            </div>
+            <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+        </div>
+
+        {# ── Stock critique ── #}
+        <div class="card">
+            <div class="card-header">
+                <span class="card-dot" style="background:#EF4444"></span>
+                <h3>Stock critique</h3>
+            </div>
+            {% if critical is empty %}
+                <p class="empty">Aucun produit en stock critique.</p>
+            {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Référence</th>
+                        <th>Stock</th>
+                        <th>Seuil</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in critical %}
+                    <tr>
+                        <td>{{ p['name'] }}</td>
+                        <td><code>{{ p['reference'] }}</code></td>
+                        <td>{{ p['stock'] }}</td>
+                        <td>{{ p['stockThreshold'] }}</td>
+                        <td>
+                            {% if p['stockThreshold'] > 0 %}
+                                {% if p['stock'] / p['stockThreshold'] <= 0.5 %}
+                                    <span class="badge badge-red">Critique</span>
+                                {% else %}
+                                    <span class="badge badge-amber">Faible</span>
+                                {% endif %}
+                            {% else %}
+                                <span class="badge badge-amber">Faible</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+
+    </div>{# end .chart-col #}
+
+</div>{# end .dash #}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const monthlyData = {{ monthly|json_encode|raw }};
+const dailyData   = {{ daily|json_encode|raw }};
+const topData     = {{ top_products|json_encode|raw }};
+const catData     = {{ categories|json_encode|raw }};
+
+const gridColor = 'rgba(0,0,0,.05)';
+const baseOpts  = { responsive: true, maintainAspectRatio: false };
+
+new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: monthlyData.map(d => d.label),
+        datasets: [{
+            label: 'Unités vendues',
+            data: monthlyData.map(d => d.total),
+            borderColor: '#185FA5',
+            backgroundColor: 'rgba(24,95,165,.08)',
+            tension: 0.45,
+            fill: true,
+            pointRadius: 3,
+            pointBackgroundColor: '#185FA5',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        ...baseOpts,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { color: gridColor }, ticks: { font: { family: 'DM Sans', size: 11 }, color: '#aaa' } },
+            y: { grid: { color: gridColor }, ticks: { font: { family: 'DM Sans', size: 11 }, color: '#aaa' } }
+        }
+    }
+});
+
+new Chart(document.getElementById('barChart'), {
+    type: 'bar',
+    data: {
+        labels: dailyData.map(d => d.label),
+        datasets: [{
+            label: 'Commandes',
+            data: dailyData.map(d => d.total),
+            backgroundColor: '#1D9E75',
+            borderRadius: 6,
+            borderSkipped: false
+        }]
+    },
+    options: {
+        ...baseOpts,
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 11 }, color: '#aaa' } },
+            y: { grid: { color: gridColor }, ticks: { font: { family: 'DM Sans', size: 11 }, color: '#aaa' } }
+        }
+    }
+});
+
+new Chart(document.getElementById('topChart'), {
+    type: 'bar',
+    data: {
+        labels: topData.map(d => d.name),
+        datasets: [{
+            label: 'Vendus',
+            data: topData.map(d => d.sold),
+            backgroundColor: '#7C3AED',
+            borderRadius: 6,
+            borderSkipped: false
+        }]
+    },
+    options: {
+        ...baseOpts,
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { grid: { color: gridColor }, ticks: { font: { family: 'DM Sans', size: 11 }, color: '#aaa' } },
+            y: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 11 }, color: '#aaa' } }
+        }
+    }
+});
+
+new Chart(document.getElementById('pieChart'), {
+    type: 'doughnut',
+    data: {
+        labels: catData.map(d => d.category),
+        datasets: [{
+            data: catData.map(d => d.total),
+            backgroundColor: ['#185FA5','#1D9E75','#7C3AED','#BA7517','#993556'],
+            borderWidth: 0,
+            hoverOffset: 6
+        }]
+    },
+    options: {
+        ...baseOpts,
+        cutout: '62%',
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    font: { family: 'DM Sans', size: 12 },
+                    color: '#555',
+                    boxWidth: 10,
+                    boxHeight: 10,
+                    borderRadius: 3,
+                    padding: 14
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}
