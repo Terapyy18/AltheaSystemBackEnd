@@ -51,5 +51,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Assistance');
         yield MenuItem::linkTo(SupportCrudController::class, 'Support Client', 'fas fa-headset')->setAction('index');
 
+        yield MenuItem::linkToRoute('Statistiques', 'fa fa-chart-bar', 'admin_stats');
+
     }
 }
