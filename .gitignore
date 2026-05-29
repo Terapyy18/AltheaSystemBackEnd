@@ -32,3 +32,5 @@
 /public/build/
 .env
 .env
+config/jwt/private.pem
+config/jwt/public.pem
