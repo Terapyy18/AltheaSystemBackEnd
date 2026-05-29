@@ -27,11 +27,12 @@ class Support
     #[ORM\Column(length: 255)]
     private ?string $type = null;
 
-    #[ORM\Column(length: 255)]
+    
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $reply = null;
 
     #[ORM\ManyToOne(inversedBy: 'support')]
-    private ?User $iduser = null;
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -91,22 +92,27 @@ class Support
         return $this->reply;
     }
 
-    public function setReply(string $reply): static
+    public function setReply(?string $reply): static
     {
         $this->reply = $reply;
 
         return $this;
     }
 
-    public function getIdUser(): ?User
+    public function getUser(): ?User
     {
-        return $this->iduser;
+        return $this->user;
     }
 
-    public function setIdUser(?User $iduser): static
+    public function setUser(?User $user): static
     {
-        $this->iduser = $iduser;
+        $this->user = $user;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('Ticket #%d: %s', $this->id, $this->title) ?? 'Nouveau ticket';
     }
 }

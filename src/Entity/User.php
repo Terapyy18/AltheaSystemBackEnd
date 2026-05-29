@@ -2,26 +2,56 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
+use App\Service\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[ApiResource]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/users',
+            denormalizationContext: ['groups' => ['user:write']],
+            normalizationContext: ['groups' => ['user:read']],
+            processor: UserPasswordHasher::class
+        ),
+        new Get(
+            normalizationContext: ['groups' => ['user:read']],
+        ),
+        new GetCollection(
+            normalizationContext: ['groups' => ['user:read']],
+        ),
+        new Put(
+            denormalizationContext: ['groups' => ['user:update']],
+            normalizationContext: ['groups' => ['user:read']],
+        ),
+        new Delete(),
+    ]
+)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['user:write', 'user:read', 'user:update'])]
     private ?string $email = null;
 
     /**
@@ -34,36 +64,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Groups(['user:write', 'user:update'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:write', 'user:read', 'user:update'])]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:write', 'user:read', 'user:update'])]
     private ?string $last_name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:write', 'user:read', 'user:update'])]
     private ?string $phone = null;
 
     #[ORM\Column]
+    #[Groups(['user:write', 'user:read', 'user:update'])]
     private ?int $siren_number = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $authCode = null;
 
     /**
      * @var Collection<int, Addresses>
      */
-    #[ORM\OneToMany(targetEntity: Addresses::class, mappedBy: 'iduser')]
+    #[ORM\OneToMany(targetEntity: Addresses::class, mappedBy: 'user')]
+    #[Groups(['user:read'])]
     private Collection $addresses;
 
     /**
      * @var Collection<int, Order>
      */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'iduser')]
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
+    #[Groups(['user:read'])]
     private Collection $orders;
 
     /**
      * @var Collection<int, Support>
      */
-    #[ORM\OneToMany(targetEntity: Support::class, mappedBy: 'iduser')]
+    #[ORM\OneToMany(targetEntity: Support::class, mappedBy: 'user')]
+    #[Groups(['user:read'])]
     private Collection $support;
 
     public function __construct()
@@ -106,7 +147,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
@@ -144,7 +184,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $data = (array) $this;
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
-        
+
         return $data;
     }
 
@@ -214,7 +254,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->addresses->contains($address)) {
             $this->addresses->add($address);
-            $address->setIdUser($this);
+            $address->setUser($this);
         }
 
         return $this;
@@ -223,9 +263,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAddress(Addresses $address): static
     {
         if ($this->addresses->removeElement($address)) {
-            // set the owning side to null (unless already changed)
-            if ($address->getIdUser() === $this) {
-                $address->setIdUser(null);
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
             }
         }
 
@@ -244,7 +283,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->orders->contains($order)) {
             $this->orders->add($order);
-            $order->setIdUser($this);
+            $order->setUser($this);
         }
 
         return $this;
@@ -253,9 +292,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeOrder(Order $order): static
     {
         if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getIdUser() === $this) {
-                $order->setIdUser(null);
+            if ($order->getUser() === $this) {
+                $order->setUser(null);
             }
         }
 
@@ -274,7 +312,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->support->contains($support)) {
             $this->support->add($support);
-            $support->setIdUser($this);
+            $support->setUser($this);
         }
 
         return $this;
@@ -283,12 +321,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeSupport(Support $support): static
     {
         if ($this->support->removeElement($support)) {
-            // set the owning side to null (unless already changed)
-            if ($support->getIdUser() === $this) {
-                $support->setIdUser(null);
+            if ($support->getUser() === $this) {
+                $support->setUser(null);
             }
         }
 
         return $this;
+    }
+
+    
+
+        public function isEmailAuthEnabled(): bool
+    {
+        return in_array('ROLE_ADMIN', $this->getRoles());
+    }
+
+    public function getEmailAuthRecipient(): string
+    {
+        return $this->email;
+    }
+
+    public function getEmailAuthCode(): string
+    {
+        return $this->authCode;
+    }
+
+    public function setEmailAuthCode(string $authCode): void
+    {
+        $this->authCode = $authCode;
+    }
+
+    public function __toString(): string
+    {
+        return $this->email ?? 'Utilisateur inconnu';
     }
 }

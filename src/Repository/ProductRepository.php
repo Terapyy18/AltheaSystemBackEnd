@@ -16,6 +16,26 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function criticalStock(): array
+    {
+        $raw = $this->createQueryBuilder('p')
+            ->select('p.id, p.sku, p.stock, pt.title AS name')
+            ->leftJoin('p.productTranslations', 'pt', 'WITH', 'pt.language = :lang')
+            ->setParameter('lang', 'fr')
+            ->where('p.stock <= :threshold')
+            ->setParameter('threshold', 5) // adapte ce seuil selon ton besoin
+            ->orderBy('p.stock', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return array_map(fn($r) => [
+            'name'           => $r['name'] ?? $r['sku'],
+            'reference'      => $r['sku'],
+            'stock'          => $r['stock'],
+            'stockThreshold' => 5, // même valeur que ci-dessus
+        ], $raw);
+    }
+
 //    /**
 //     * @return Product[] Returns an array of Product objects
 //     */
