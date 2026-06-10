@@ -7,13 +7,39 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
-    normalizationContext: ['groups' => ['address:read']],
-    denormalizationContext: ['groups' => ['address:write']],
+    operations: [
+        new GetCollection(
+            security: 'is_granted("ROLE_USER")',
+            normalizationContext: ['groups' => ['address:read']],
+        ),
+        new Get(
+            security: 'is_granted("ROLE_ADMIN") or object.getUser() == user',
+            normalizationContext: ['groups' => ['address:read']],
+        ),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            denormalizationContext: ['groups' => ['address:write']],
+            normalizationContext: ['groups' => ['address:read']],
+        ),
+        new Put(
+            security: 'is_granted("ROLE_ADMIN") or object.getUser() == user',
+            denormalizationContext: ['groups' => ['address:write']],
+            normalizationContext: ['groups' => ['address:read']],
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN") or object.getUser() == user',
+        ),
+    ],
 )]
 #[ORM\Entity(repositoryClass: AddressesRepository::class)]
 class Addresses

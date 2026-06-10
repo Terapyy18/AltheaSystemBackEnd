@@ -19,9 +19,17 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Get(normalizationContext: ['groups' => ['product:read']]),
         new GetCollection(normalizationContext: ['groups' => ['product:read']]),
-        new Post(denormalizationContext: ['groups' => ['product:write']]),
-        new Put(denormalizationContext: ['groups' => ['product:write']]),
-        new Delete(),
+        new Post(
+            security: 'is_granted("ROLE_ADMIN")',
+            denormalizationContext: ['groups' => ['product:write']],
+        ),
+        new Put(
+            security: 'is_granted("ROLE_ADMIN")',
+            denormalizationContext: ['groups' => ['product:write']],
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
     ],
     normalizationContext: ['groups' => ['product:read']],
     denormalizationContext: ['groups' => ['product:write']],

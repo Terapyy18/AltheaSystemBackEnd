@@ -5,33 +5,71 @@ namespace App\Entity;
 use App\Repository\SupportRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: 'is_granted("ROLE_USER")',
+            normalizationContext: ['groups' => ['support:read']],
+        ),
+        new Get(
+            security: 'is_granted("ROLE_ADMIN") or object.getUser() == user',
+            normalizationContext: ['groups' => ['support:read']],
+        ),
+        // Création de ticket : tout utilisateur authentifié
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            denormalizationContext: ['groups' => ['support:write']],
+            normalizationContext: ['groups' => ['support:read']],
+        ),
+        // Réponse admin (reply) : admin uniquement
+        new Patch(
+            security: 'is_granted("ROLE_ADMIN")',
+            denormalizationContext: ['groups' => ['support:admin-write']],
+            normalizationContext: ['groups' => ['support:read']],
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: SupportRepository::class)]
 class Support
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['support:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['support:read', 'support:write'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['support:read', 'support:admin-write'])]
     private ?string $status = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['support:read', 'support:write'])]
     private ?string $message = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['support:read', 'support:write'])]
     private ?string $type = null;
 
-    
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['support:read', 'support:admin-write'])]
     private ?string $reply = null;
 
     #[ORM\ManyToOne(inversedBy: 'support')]
+    #[Groups(['support:read', 'support:write'])]
     private ?User $user = null;
 
     public function getId(): ?int

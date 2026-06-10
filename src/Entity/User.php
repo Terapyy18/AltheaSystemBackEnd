@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
@@ -23,24 +24,40 @@ use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ApiResource(
     operations: [
+        // Inscription publique
         new Post(
             uriTemplate: '/users',
             denormalizationContext: ['groups' => ['user:write']],
             normalizationContext: ['groups' => ['user:read']],
-            processor: UserPasswordHasher::class
+            processor: UserPasswordHasher::class,
         ),
+        // Lecture du profil : admin ou soi-même
         new Get(
+            security: 'is_granted("ROLE_ADMIN") or object == user',
             normalizationContext: ['groups' => ['user:read']],
         ),
+        // Collection : filtrée côté Doctrine (CurrentUserExtension) — chaque user ne se voit que lui-même
         new GetCollection(
+            security: 'is_granted("ROLE_USER")',
             normalizationContext: ['groups' => ['user:read']],
         ),
+        // Mise à jour complète : admin ou soi-même
         new Put(
+            security: 'is_granted("ROLE_ADMIN") or object == user',
             denormalizationContext: ['groups' => ['user:update']],
             normalizationContext: ['groups' => ['user:read']],
         ),
-        new Delete(),
-    ]
+        // Mise à jour partielle (utilisée par le frontend) : admin ou soi-même
+        new Patch(
+            security: 'is_granted("ROLE_ADMIN") or object == user',
+            denormalizationContext: ['groups' => ['user:update']],
+            normalizationContext: ['groups' => ['user:read']],
+        ),
+        // Suppression : admin uniquement
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
+    ],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
 {

@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,8 +18,29 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 #[ApiResource(
-    normalizationContext: ['groups' => ['order:read']],
-    denormalizationContext: ['groups' => ['order:write']],
+    operations: [
+        new GetCollection(
+            security: 'is_granted("ROLE_USER")',
+            normalizationContext: ['groups' => ['order:read']],
+        ),
+        new Get(
+            security: 'is_granted("ROLE_ADMIN") or object.getUser() == user',
+            normalizationContext: ['groups' => ['order:read']],
+        ),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            denormalizationContext: ['groups' => ['order:write']],
+            normalizationContext: ['groups' => ['order:read']],
+        ),
+        new Put(
+            security: 'is_granted("ROLE_ADMIN")',
+            denormalizationContext: ['groups' => ['order:write']],
+            normalizationContext: ['groups' => ['order:read']],
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
+    ],
 )]
 class Order
 {
