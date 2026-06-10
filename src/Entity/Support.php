@@ -22,9 +22,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
             security: 'is_granted("ROLE_ADMIN") or object.getUser() == user',
             normalizationContext: ['groups' => ['support:read']],
         ),
-        // Création de ticket : tout utilisateur authentifié
+        // Création de ticket : public (invités et utilisateurs connectés)
         new Post(
-            security: 'is_granted("ROLE_USER")',
+            security: 'is_granted("PUBLIC_ACCESS")',
             denormalizationContext: ['groups' => ['support:write']],
             normalizationContext: ['groups' => ['support:read']],
         ),
@@ -54,7 +54,7 @@ class Support
 
     #[ORM\Column(length: 255)]
     #[Groups(['support:read', 'support:admin-write'])]
-    private ?string $status = null;
+    private ?string $status = 'open';
 
     #[ORM\Column(length: 255)]
     #[Groups(['support:read', 'support:write'])]
@@ -67,6 +67,10 @@ class Support
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['support:read', 'support:admin-write'])]
     private ?string $reply = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['support:read', 'support:write'])]
+    private ?string $email = null;
 
     #[ORM\ManyToOne(inversedBy: 'support')]
     #[Groups(['support:read', 'support:write'])]
@@ -145,6 +149,18 @@ class Support
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }
