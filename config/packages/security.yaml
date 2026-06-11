@@ -57,6 +57,7 @@ security:
         - { path: ^/api/products, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/product_translations, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/product_categories, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/site_settings, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/cart/validate, roles: PUBLIC_ACCESS, methods: [POST] }
         - { path: ^/api/webhooks/stripe, roles: PUBLIC_ACCESS, methods: [POST] }
         - { path: ^/api/reset-password, roles: PUBLIC_ACCESS }

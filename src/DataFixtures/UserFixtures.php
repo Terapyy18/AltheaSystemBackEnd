@@ -37,12 +37,21 @@ class UserFixtures extends Fixture
     private function getData(): array
     {
         return [
-            // ── Admin ──────────────────────────────────────────────────────
+            // ── Admins ─────────────────────────────────────────────────────
+            [
+                'email'        => 'theodumontet.pro@gmail.com',
+                'first_name'   => 'Theo',
+                'last_name'    => 'Dumontet',
+                'phone'        => '0600000000',
+                'siren_number' => 0,
+                'password'     => 'demo1234',
+                'roles'        => ['ROLE_ADMIN'],
+            ],
             [
                 'email'        => 'admin@example.com',
                 'first_name'   => 'admin',
                 'last_name'    => 'System',
-                'phone'        => '0600000000',
+                'phone'        => '0600000001',
                 'siren_number' => 123456789,
                 'password'     => 'admin',
                 'roles'        => ['ROLE_ADMIN'],
