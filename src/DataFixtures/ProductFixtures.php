@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Product;
+use App\Entity\ProductImages;
 use App\Entity\ProductTranslation;
 use App\Entity\ProductCategory;
 use App\Entity\ProductCategoryTranslation;
@@ -36,6 +37,10 @@ class ProductFixtures extends Fixture
                 'height'      => 85.0,
                 'length'      => 60.0,
                 'categories'  => ['Mobilité'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=400',
+                    'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Déambulateur Pliable Premium',
@@ -62,6 +67,11 @@ class ProductFixtures extends Fixture
                 'height'      => 90.0,
                 'length'      => 65.0,
                 'categories'  => ['Mobilité'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
+                    'https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=400',
+                    'https://images.unsplash.com/photo-1617394484097-5a9c5f81f8b7?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Fauteuil Roulant Manuel Confort',
@@ -88,6 +98,10 @@ class ProductFixtures extends Fixture
                 'height'      => 85.0,
                 'length'      => 25.0,
                 'categories'  => ['Mobilité'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400',
+                    'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Canne de Marche Ergonomique',
@@ -114,6 +128,11 @@ class ProductFixtures extends Fixture
                 'height'      => 92.0,
                 'length'      => 70.0,
                 'categories'  => ['Mobilité'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=400',
+                    'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
+                    'https://images.unsplash.com/photo-1617394484097-5a9c5f81f8b7?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Fauteuil Roulant Électrique',
@@ -140,6 +159,10 @@ class ProductFixtures extends Fixture
                 'height'      => 88.0,
                 'length'      => 30.0,
                 'categories'  => ['Mobilité'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=400',
+                    'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Béquilles Axillaires Réglables',
@@ -166,6 +189,10 @@ class ProductFixtures extends Fixture
                 'height'      => 100.0,
                 'length'      => 12.0,
                 'categories'  => ['Mobilité'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
+                    'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Canne Tripode Antidérapante',
@@ -194,6 +221,10 @@ class ProductFixtures extends Fixture
                 'height'      => 15.0,
                 'length'      => 12.0,
                 'categories'  => ['Diagnostic'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
+                    'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Thermomètre Digital Infrarouge',
@@ -220,6 +251,10 @@ class ProductFixtures extends Fixture
                 'height'      => 8.0,
                 'length'      => 15.0,
                 'categories'  => ['Diagnostic'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
+                    'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Tensiomètre Automatique',
@@ -246,6 +281,11 @@ class ProductFixtures extends Fixture
                 'height'      => 10.0,
                 'length'      => 20.0,
                 'categories'  => ['Diagnostic'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
+                    'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
+                    'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Stéthoscope Professionnel',
@@ -272,6 +312,10 @@ class ProductFixtures extends Fixture
                 'height'      => 6.0,
                 'length'      => 10.0,
                 'categories'  => ['Diagnostic'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
+                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Oxymètre de Pouls Digital',
@@ -298,6 +342,10 @@ class ProductFixtures extends Fixture
                 'height'      => 12.0,
                 'length'      => 25.0,
                 'categories'  => ['Diagnostic'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
+                    'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Électrocardiographe Portable',
@@ -324,6 +372,10 @@ class ProductFixtures extends Fixture
                 'height'      => 4.0,
                 'length'      => 9.0,
                 'categories'  => ['Diagnostic'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
+                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Glucomètre Auto-Codant',
@@ -350,6 +402,10 @@ class ProductFixtures extends Fixture
                 'height'      => 7.0,
                 'length'      => 14.0,
                 'categories'  => ['Diagnostic'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
+                    'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Otoscope LED Professionnel',
@@ -378,6 +434,10 @@ class ProductFixtures extends Fixture
                 'height'      => 10.0,
                 'length'      => 8.0,
                 'categories'  => ['Hygiène'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
+                    'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Gel Hydroalcoolique 500ml',
@@ -404,6 +464,10 @@ class ProductFixtures extends Fixture
                 'height'      => 2.0,
                 'length'      => 18.0,
                 'categories'  => ['Hygiène'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
+                    'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Masques Chirurgicaux Type II',
@@ -430,6 +494,10 @@ class ProductFixtures extends Fixture
                 'height'      => 3.0,
                 'length'      => 15.0,
                 'categories'  => ['Hygiène'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
+                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Gants Latex Non Poudrés',
@@ -456,6 +524,10 @@ class ProductFixtures extends Fixture
                 'height'      => 35.0,
                 'length'      => 28.0,
                 'categories'  => ['Hygiène'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
+                    'https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Distributeur Mural de Savon',
@@ -482,6 +554,10 @@ class ProductFixtures extends Fixture
                 'height'      => 1.5,
                 'length'      => 20.0,
                 'categories'  => ['Hygiène'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
+                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Surblouses Jetables Non Tissées',
@@ -508,6 +584,10 @@ class ProductFixtures extends Fixture
                 'height'      => 5.0,
                 'length'      => 22.0,
                 'categories'  => ['Hygiène'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
+                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Charlotte et Couvre-Chaussures',
@@ -534,6 +614,10 @@ class ProductFixtures extends Fixture
                 'height'      => 4.0,
                 'length'      => 20.0,
                 'categories'  => ['Hygiène'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
+                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Gants Nitrile Non Poudrés',
@@ -562,6 +646,10 @@ class ProductFixtures extends Fixture
                 'height'      => 5.0,
                 'length'      => 60.0,
                 'categories'  => ['Rééducation'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400',
+                    'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Bande Élastique de Résistance',
@@ -588,6 +676,10 @@ class ProductFixtures extends Fixture
                 'height'      => 40.0,
                 'length'      => 50.0,
                 'categories'  => ['Rééducation'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
+                    'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Appareil TENS/EMS Professionnel',
@@ -614,6 +706,10 @@ class ProductFixtures extends Fixture
                 'height'      => 12.0,
                 'length'      => 30.0,
                 'categories'  => ['Rééducation'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
+                    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Orthèse de Poignet Articulée',
@@ -640,6 +736,10 @@ class ProductFixtures extends Fixture
                 'height'      => 10.0,
                 'length'      => 25.0,
                 'categories'  => ['Rééducation'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400',
+                    'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Coussin de Proprioception',
@@ -666,6 +766,10 @@ class ProductFixtures extends Fixture
                 'height'      => 20.0,
                 'length'      => 45.0,
                 'categories'  => ['Rééducation'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
+                    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Vélo Pédales Bras et Jambes',
@@ -692,6 +796,10 @@ class ProductFixtures extends Fixture
                 'height'      => 3.0,
                 'length'      => 20.0,
                 'categories'  => ['Rééducation'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
+                    'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Balle de Rééducation Main',
@@ -718,6 +826,11 @@ class ProductFixtures extends Fixture
                 'height'      => 30.0,
                 'length'      => 55.0,
                 'categories'  => ['Rééducation'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400',
+                    'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
+                    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Attelle Genou Articulée CPM',
@@ -746,6 +859,10 @@ class ProductFixtures extends Fixture
                 'height'      => 8.0,
                 'length'      => 18.0,
                 'categories'  => ['Optique'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
+                    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Ophtalmoscope Direct LED',
@@ -772,6 +889,10 @@ class ProductFixtures extends Fixture
                 'height'      => 3.0,
                 'length'      => 14.0,
                 'categories'  => ['Optique'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1602034987685-ac6300eb7be1?w=400',
+                    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Lunettes de Lecture Légères',
@@ -798,6 +919,10 @@ class ProductFixtures extends Fixture
                 'height'      => 20.0,
                 'length'      => 35.0,
                 'categories'  => ['Optique'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
+                    'https://images.unsplash.com/photo-1602034987685-ac6300eb7be1?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Lampe à Fente Portable',
@@ -824,6 +949,10 @@ class ProductFixtures extends Fixture
                 'height'      => 2.0,
                 'length'      => 8.0,
                 'categories'  => ['Optique'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
+                    'https://images.unsplash.com/photo-1602034987685-ac6300eb7be1?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Collyre Lubrifiant Yeux Secs',
@@ -850,6 +979,10 @@ class ProductFixtures extends Fixture
                 'height'      => 30.0,
                 'length'      => 40.0,
                 'categories'  => ['Optique'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
+                    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Tonomètre à Aplanation',
@@ -878,6 +1011,10 @@ class ProductFixtures extends Fixture
                 'height'      => 110.0,
                 'length'      => 80.0,
                 'categories'  => ['Confort'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
+                    'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Fauteuil de Repos Releveur',
@@ -904,6 +1041,10 @@ class ProductFixtures extends Fixture
                 'height'      => 8.0,
                 'length'      => 60.0,
                 'categories'  => ['Confort'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
+                    'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Coussin Anti-Escarres Gel',
@@ -930,6 +1071,10 @@ class ProductFixtures extends Fixture
                 'height'      => 6.0,
                 'length'      => 50.0,
                 'categories'  => ['Confort'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
+                    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Traversin Ergonomique Cervical',
@@ -956,6 +1101,10 @@ class ProductFixtures extends Fixture
                 'height'      => 15.0,
                 'length'      => 40.0,
                 'categories'  => ['Confort'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
+                    'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Matelas Chauffant Thérapeutique',
@@ -982,6 +1131,11 @@ class ProductFixtures extends Fixture
                 'height'      => 45.0,
                 'length'      => 70.0,
                 'categories'  => ['Confort'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
+                    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
+                    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Lit Médicalisé Électrique',
@@ -1008,6 +1162,10 @@ class ProductFixtures extends Fixture
                 'height'      => 5.0,
                 'length'      => 30.0,
                 'categories'  => ['Confort'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=400',
+                    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Genouillère Compressive Neoprene',
@@ -1034,6 +1192,10 @@ class ProductFixtures extends Fixture
                 'height'      => 6.0,
                 'length'      => 35.0,
                 'categories'  => ['Confort'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Ceinture Lombaire de Soutien',
@@ -1060,6 +1222,10 @@ class ProductFixtures extends Fixture
                 'height'      => 50.0,
                 'length'      => 60.0,
                 'categories'  => ['Confort'],
+                'images'      => [
+                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
+                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                ],
                 'translations' => [
                     'fr' => [
                         'title'       => 'Bain de Pieds Massant Shiatsu',
@@ -1105,6 +1271,13 @@ class ProductFixtures extends Fixture
                 $productTranslation->setProduct($product);
 
                 $manager->persist($productTranslation);
+            }
+
+            foreach ($data['images'] ?? [] as $imageUrl) {
+                $img = new ProductImages();
+                $img->setImageUrl($imageUrl);
+                $product->addProductImage($img);
+                $manager->persist($img);
             }
 
             $manager->persist($product);
