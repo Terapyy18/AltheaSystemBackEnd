@@ -35,6 +35,7 @@ use App\Entity\ItemsOrder;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Service\InvoiceService;
 use App\Repository\AddressesRepository;
 use App\Repository\OrderRepository;
 use App\Repository\UserRepository;
@@ -59,6 +60,7 @@ final class OrderService
         private readonly MailerInterface $mailer,
         private readonly Environment $twig,
         private readonly LoggerInterface $logger,
+        private readonly InvoiceService $invoiceService,
     ) {
     }
 
@@ -227,6 +229,16 @@ final class OrderService
                 'error' => $e->getMessage(),
             ]);
             return null;
+        }
+
+        // Génération de la facture PDF (post-commit, non bloquant)
+        try {
+            $this->invoiceService->generateForOrder($order);
+        } catch (\Throwable $e) {
+            $this->logger->warning('[Order] Invoice generation failed (order still committed)', $logCtx + [
+                'order_id' => $order->getId(),
+                'error'    => $e->getMessage(),
+            ]);
         }
 
         try {

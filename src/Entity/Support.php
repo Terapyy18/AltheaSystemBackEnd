@@ -52,9 +52,11 @@ class Support
     #[Groups(['support:read', 'support:write'])]
     private ?string $title = null;
 
+    // Statuts alignés sur l'admin tickets (SupportController + templates admin/tickets) :
+    // 'ouvert' | 'en_cours' | 'resolu' | 'ferme'
     #[ORM\Column(length: 255)]
     #[Groups(['support:read', 'support:admin-write'])]
-    private ?string $status = 'open';
+    private ?string $status = 'ouvert';
 
     #[ORM\Column(length: 255)]
     #[Groups(['support:read', 'support:write'])]

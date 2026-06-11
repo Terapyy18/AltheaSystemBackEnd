@@ -78,6 +78,10 @@ class Order
     #[Groups(['order:read', 'order:write'])]
     private ?string $invoicePath = null;
 
+    #[ORM\Column(name: 'invoice_number', length: 50, nullable: true)]
+    #[Groups(['order:read'])]
+    private ?string $invoiceNumber = null;
+
     #[ORM\Column(name: 'total_price', type: Types::FLOAT)]
     #[Groups(['order:read', 'order:write'])]
     private ?float $totalPrice = null;
@@ -197,6 +201,17 @@ class Order
     public function setInvoicePath(?string $invoicePath): static
     {
         $this->invoicePath = $invoicePath;
+        return $this;
+    }
+
+    public function getInvoiceNumber(): ?string
+    {
+        return $this->invoiceNumber;
+    }
+
+    public function setInvoiceNumber(?string $invoiceNumber): static
+    {
+        $this->invoiceNumber = $invoiceNumber;
         return $this;
     }
 

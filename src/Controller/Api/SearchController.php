@@ -36,14 +36,18 @@ class SearchController extends AbstractController
             fn (int $id) => $id > 0
         ));
         $available = $request->query->getBoolean('available');
+        $sort      = in_array($request->query->get('sort', 'relevance'), ['relevance', 'price', 'newest', 'availability'], true)
+                     ? (string) $request->query->get('sort', 'relevance')
+                     : 'relevance';
+        $order     = $request->query->get('order', 'asc') === 'desc' ? 'desc' : 'asc';
 
         ['total' => $total, 'products' => $products] = $repo->search(
-            $q, $lang, $priceMin, $priceMax, $categoryIds, $available, $page, $limit
+            $q, $lang, $priceMin, $priceMax, $categoryIds, $available, $page, $limit, $sort, $order
         );
 
         $totalPages = max(1, (int) ceil($total / $limit));
 
-        $buildUrl = function (int $p) use ($q, $lang, $priceMin, $priceMax, $categoryIds, $available, $limit): string {
+        $buildUrl = function (int $p) use ($q, $lang, $priceMin, $priceMax, $categoryIds, $available, $limit, $sort, $order): string {
             $params = ['page' => $p];
             if ($q !== '') { $params['q'] = $q; }
             if ($lang !== 'fr') { $params['lang'] = $lang; }
@@ -52,6 +56,8 @@ class SearchController extends AbstractController
             if (!empty($categoryIds)) { $params['categories'] = $categoryIds; }
             if ($available) { $params['available'] = '1'; }
             if ($limit !== self::PAGE_SIZE) { $params['limit'] = $limit; }
+            if ($sort !== 'relevance') { $params['sort'] = $sort; }
+            if ($order !== 'asc') { $params['order'] = $order; }
             return '/api/search?' . http_build_query($params);
         };
 

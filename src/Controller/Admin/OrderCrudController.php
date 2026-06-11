@@ -15,9 +15,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use Symfony\Component\Routing\RouterInterface;
 
 class OrderCrudController extends AbstractCrudController
 {
+    public function __construct(private readonly RouterInterface $router)
+    {
+    }
+
     public static function getEntityFqcn(): string
     {
         return Order::class;
@@ -36,11 +41,23 @@ class OrderCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $router = $this->router;
+
+        $downloadInvoice = Action::new('downloadInvoice', 'Télécharger la facture', 'fa fa-file-pdf')
+            ->linkToUrl(function (Order $order) use ($router): string {
+                return $router->generate('admin_order_invoice_download', ['id' => $order->getId()]);
+            })
+            ->setHtmlAttributes(['target' => '_blank'])
+            ->addCssClass('btn btn-sm btn-success')
+            ->displayIf(static fn (Order $order): bool => $order->getInvoicePath() !== null);
+
         return $actions
-            ->disable(Action::NEW)       // pas de création manuelle
-            ->disable(Action::DELETE)    // pas de suppression
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)  // bouton "Voir"
-            ->add(Crud::PAGE_EDIT, Action::DETAIL);  // bouton "Voir" depuis l'édition
+            ->disable(Action::NEW)
+            ->disable(Action::DELETE)
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            ->add(Crud::PAGE_DETAIL, $downloadInvoice)
+            ->add(Crud::PAGE_INDEX, $downloadInvoice);
     }
 
     public function configureFields(string $pageName): iterable
@@ -69,12 +86,17 @@ class OrderCrudController extends AbstractCrudController
 
             NumberField::new('totalPrice', 'Montant Total (€)')
                 ->setNumDecimals(2)
-                ->setFormTypeOption('disabled', true), // lecture seule en édition
+                ->setFormTypeOption('disabled', true),
 
             IntegerField::new('shippingNumber', 'N° Suivi Colis'),
 
-            TextField::new('invoicePath', 'Lien Facture (PDF)')
+            TextField::new('invoiceNumber', 'N° Facture')
+                ->setFormTypeOption('disabled', true)
                 ->hideOnIndex(),
+
+            TextField::new('invoicePath', 'Chemin Facture (PDF)')
+                ->hideOnIndex()
+                ->hideOnForm(),
 
             DateTimeField::new('createdAt', 'Créée le')
                 ->hideOnForm(),

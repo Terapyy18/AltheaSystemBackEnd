@@ -73,6 +73,8 @@ class ProductRepository extends ServiceEntityRepository
      * Full-text search with facets. Uses pg_trgm + f_unaccent for accent-insensitive ILIKE.
      *
      * @param array<int> $categoryIds
+     * @param string     $sort  'relevance' | 'price' | 'newest' | 'availability'
+     * @param string     $order 'asc' | 'desc'
      * @return array{total: int, products: Product[]}
      */
     public function search(
@@ -83,7 +85,9 @@ class ProductRepository extends ServiceEntityRepository
         array $categoryIds,
         bool $availableOnly,
         int $page,
-        int $limit
+        int $limit,
+        string $sort = 'relevance',
+        string $order = 'asc'
     ): array {
         $conn       = $this->getEntityManager()->getConnection();
         $conditions = ['p.is_published = true'];
@@ -121,11 +125,29 @@ class ProductRepository extends ServiceEntityRepository
 
         $total = (int) $conn->executeQuery("SELECT COUNT(DISTINCT p.id) {$fromJoin} {$where}", $params)->fetchOne();
 
-        $offset = ($page - 1) * $limit;
-        $ids    = $conn->executeQuery(
-            "SELECT DISTINCT p.id {$fromJoin} {$where} ORDER BY p.id LIMIT {$limit} OFFSET {$offset}",
-            $params
-        )->fetchFirstColumn();
+        // Build IDs query with sort.
+        // For non-trivial sorts a subquery is required: SELECT DISTINCT in PostgreSQL only allows
+        // ORDER BY on expressions that appear in the SELECT list.
+        $offset   = ($page - 1) * $limit;
+        $orderDir = $order === 'desc' ? 'DESC' : 'ASC';
+
+        if ($sort === 'relevance') {
+            $ids = $conn->executeQuery(
+                "SELECT DISTINCT p.id {$fromJoin} {$where} ORDER BY p.id ASC LIMIT {$limit} OFFSET {$offset}",
+                $params
+            )->fetchFirstColumn();
+        } else {
+            $sortExpr = match ($sort) {
+                'price'        => $effectivePrice,
+                'newest'       => 'p.create_at',
+                'availability' => 'CASE WHEN p.stock > 0 THEN 0 ELSE 1 END',
+                default        => 'p.id',
+            };
+            $ids = $conn->executeQuery(
+                "SELECT id FROM (SELECT DISTINCT p.id, {$sortExpr} AS sort_col {$fromJoin} {$where}) sub ORDER BY sort_col {$orderDir}, id ASC LIMIT {$limit} OFFSET {$offset}",
+                $params
+            )->fetchFirstColumn();
+        }
 
         if (empty($ids)) {
             return ['total' => $total, 'products' => []];

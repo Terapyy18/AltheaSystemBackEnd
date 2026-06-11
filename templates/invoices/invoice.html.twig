@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Facture {{ invoice_number }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: DejaVu Sans, Arial, sans-serif;
+            font-size: 11px;
+            color: #2d3748;
+            background: #fff;
+        }
+
+        /* ── En-tête ── */
+        .header-table {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        .brand-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0d9488;
+            letter-spacing: 2px;
+        }
+        .brand-tagline {
+            font-size: 10px;
+            color: #718096;
+            margin-top: 4px;
+        }
+        .company-info {
+            font-size: 10px;
+            color: #4a5568;
+            line-height: 1.7;
+            text-align: right;
+        }
+
+        /* ── Titre Facture ── */
+        .invoice-title {
+            background: #0d9488;
+            color: #fff;
+            padding: 10px 14px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        /* ── Méta (numéro, date) ── */
+        .meta-table {
+            width: 100%;
+            margin-bottom: 24px;
+        }
+        .meta-label {
+            font-size: 9px;
+            font-weight: bold;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+        .meta-value {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1a202c;
+        }
+
+        /* ── Parties (vendeur / client) ── */
+        .parties-table {
+            width: 100%;
+            margin-bottom: 28px;
+        }
+        .party-box {
+            width: 48%;
+            vertical-align: top;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+        }
+        .party-box-right {
+            background: #f7fafc;
+        }
+        .party-title {
+            font-size: 9px;
+            font-weight: bold;
+            color: #0d9488;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+            margin-bottom: 7px;
+        }
+        .party-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1a202c;
+            margin-bottom: 3px;
+        }
+        .party-detail {
+            font-size: 10px;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* ── Tableau articles ── */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 10px;
+        }
+        .items-table thead tr {
+            background: #2d3748;
+            color: #fff;
+        }
+        .items-table thead th {
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .items-table thead th.right {
+            text-align: right;
+        }
+        .items-table tbody tr {
+            border-bottom: 1px solid #edf2f7;
+        }
+        .items-table tbody tr:nth-child(even) {
+            background: #f7fafc;
+        }
+        .items-table tbody td {
+            padding: 8px 10px;
+            vertical-align: middle;
+        }
+        .items-table tbody td.right {
+            text-align: right;
+        }
+        .items-table tbody td.center {
+            text-align: center;
+        }
+        .sku-badge {
+            font-size: 9px;
+            color: #718096;
+            background: #edf2f7;
+            padding: 1px 5px;
+            border-radius: 2px;
+        }
+
+        /* ── Totaux ── */
+        .totals-table {
+            width: 100%;
+            margin-bottom: 28px;
+        }
+        .totals-inner {
+            width: 260px;
+            float: right;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .totals-row {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .totals-row td {
+            padding: 7px 12px;
+            font-size: 11px;
+        }
+        .totals-row tr {
+            border-bottom: 1px solid #edf2f7;
+        }
+        .totals-row tr:last-child {
+            border-bottom: none;
+        }
+        .totals-row .total-label {
+            color: #4a5568;
+        }
+        .totals-row .total-amount {
+            text-align: right;
+            font-weight: bold;
+            color: #1a202c;
+        }
+        .totals-row .ttc-label {
+            background: #0d9488;
+            color: #fff;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .totals-row .ttc-amount {
+            background: #0d9488;
+            color: #fff;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: right;
+        }
+        .clearfix { clear: both; }
+
+        /* ── Adresse facturation ── */
+        .billing-section {
+            margin-bottom: 20px;
+            padding: 10px 14px;
+            border-left: 3px solid #0d9488;
+            background: #f7fafc;
+        }
+        .billing-title {
+            font-size: 9px;
+            font-weight: bold;
+            color: #0d9488;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 5px;
+        }
+        .billing-detail {
+            font-size: 10px;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+
+        /* ── Mentions légales / pied de page ── */
+        .footer {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+            margin-top: 20px;
+        }
+        .footer-text {
+            font-size: 9px;
+            color: #a0aec0;
+            line-height: 1.6;
+            text-align: center;
+        }
+        .legal-mentions {
+            font-size: 9px;
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .page-separator {
+            margin: 16px 0;
+            border: none;
+            border-top: 1px dashed #cbd5e0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ══ EN-TÊTE SOCIÉTÉ ══ -->
+    <table class="header-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="width:60%; vertical-align:top;">
+                <div class="brand-name">ALTHEA</div>
+                <div class="brand-tagline">Matériel médical professionnel</div>
+            </td>
+            <td style="width:40%; vertical-align:top;">
+                <div class="company-info">
+                    <strong>Althea Systems SAS</strong><br>
+                    12 Avenue de la Santé<br>
+                    75013 Paris, France<br>
+                    SIREN : 123 456 789<br>
+                    TVA Intracommunautaire : FR12 123456789<br>
+                    contact@althea-systems.com
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ══ TITRE ══ -->
+    <div class="invoice-title">FACTURE</div>
+
+    <!-- ══ NUMÉRO / DATE ══ -->
+    <table class="meta-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="width:33%;">
+                <div class="meta-label">N° de facture</div>
+                <div class="meta-value">{{ invoice_number }}</div>
+            </td>
+            <td style="width:33%;">
+                <div class="meta-label">Date de facturation</div>
+                <div class="meta-value">{{ invoice_date|date('d/m/Y') }}</div>
+            </td>
+            <td style="width:33%;">
+                <div class="meta-label">N° commande interne</div>
+                <div class="meta-value">#{{ order.id }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ══ VENDEUR / CLIENT ══ -->
+    <table class="parties-table" cellpadding="0" cellspacing="6">
+        <tr>
+            <td class="party-box" style="width:48%;">
+                <div class="party-title">Vendeur</div>
+                <div class="party-name">Althea Systems SAS</div>
+                <div class="party-detail">
+                    12 Avenue de la Santé<br>
+                    75013 Paris, France<br>
+                    SIREN : 123 456 789<br>
+                    TVA : FR12 123456789
+                </div>
+            </td>
+            <td style="width:4%;"></td>
+            <td class="party-box party-box-right" style="width:48%;">
+                <div class="party-title">Client</div>
+                {% set user = order.user %}
+                {% if user %}
+                    <div class="party-name">{{ user.firstName }} {{ user.lastName }}</div>
+                    <div class="party-detail">
+                        {{ user.email }}<br>
+                        {% if user.sirenNumber %}
+                            SIREN : {{ user.sirenNumber }}<br>
+                        {% endif %}
+                        {% if user.phone %}
+                            Tél. : {{ user.phone }}
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="party-detail">Client inconnu</div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <!-- ══ ADRESSE DE FACTURATION ══ -->
+    {% set addr = order.addresses %}
+    {% if addr %}
+        <div class="billing-section">
+            <div class="billing-title">Adresse de facturation / livraison</div>
+            <div class="billing-detail">
+                {{ addr.address }}<br>
+                {{ addr.postalCode }} {{ addr.city }}{% if addr.province %}, {{ addr.province }}{% endif %}<br>
+                {{ addr.countryCode }}
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- ══ TABLEAU DES ARTICLES ══ -->
+    <table class="items-table" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th style="width:12%;">Réf.</th>
+                <th style="width:38%;">Désignation</th>
+                <th class="right" style="width:8%;">Qté</th>
+                <th class="right" style="width:14%;">Prix unitaire HT</th>
+                <th class="right" style="width:14%;">TVA {{ tva_rate_pct }}%</th>
+                <th class="right" style="width:14%;">Total TTC</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in lines %}
+                <tr>
+                    <td>
+                        {% if line.sku %}
+                            <span class="sku-badge">{{ line.sku }}</span>
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                    <td>{{ line.title }}</td>
+                    <td class="center">{{ line.quantity }}</td>
+                    <td class="right">{{ line.unit_price_ht|number_format(2, ',', ' ') }} €</td>
+                    <td class="right">{{ (line.unit_price_ttc - line.unit_price_ht)|number_format(2, ',', ' ') }} €</td>
+                    <td class="right">{{ line.line_ttc|number_format(2, ',', ' ') }} €</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6" style="text-align:center; color:#718096; padding:12px;">
+                        Aucun article
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- ══ TOTAUX ══ -->
+    <table class="totals-table" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <!-- colonne gauche vide pour pousser les totaux à droite -->
+            </td>
+            <td style="width:260px; vertical-align:top;">
+                <table class="totals-row" cellpadding="0" cellspacing="0" style="width:100%; border:1px solid #e2e8f0; border-radius:4px;">
+                    <tr>
+                        <td class="total-label" style="padding:7px 12px;">Total HT</td>
+                        <td class="total-amount" style="padding:7px 12px; text-align:right;">{{ total_ht|number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                    <tr>
+                        <td class="total-label" style="padding:7px 12px; border-top:1px solid #edf2f7;">TVA {{ tva_rate_pct }}%</td>
+                        <td class="total-amount" style="padding:7px 12px; text-align:right; border-top:1px solid #edf2f7;">{{ total_tva|number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:9px 12px; background:#0d9488; color:#fff; font-weight:bold; font-size:12px;">Total TTC</td>
+                        <td style="padding:9px 12px; text-align:right; background:#0d9488; color:#fff; font-weight:bold; font-size:12px;">{{ total_ttc|number_format(2, ',', ' ') }} €</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ══ MENTIONS LÉGALES ══ -->
+    <div class="footer">
+        <div class="legal-mentions">
+            <strong>Conditions de paiement :</strong> Paiement immédiat par carte bancaire (Stripe).<br>
+            <strong>Pénalités de retard :</strong> En cas de retard de paiement, des pénalités de 3 fois le taux d'intérêt légal seront appliquées (article L. 441-10 du Code de commerce), ainsi qu'une indemnité forfaitaire pour frais de recouvrement de 40 €.<br>
+            <strong>Escompte :</strong> Aucun escompte consenti en cas de paiement anticipé.
+        </div>
+        <div class="footer-text">
+            Althea Systems SAS — SIREN 123 456 789 — Capital social 10 000 € — RCS Paris B 123 456 789<br>
+            Siège social : 12 Avenue de la Santé, 75013 Paris, France — contact@althea-systems.com<br>
+            Document généré automatiquement — Facture valable sans signature conformément à l'article 289 du CGI
+        </div>
+    </div>
+
+</body>
+</html>

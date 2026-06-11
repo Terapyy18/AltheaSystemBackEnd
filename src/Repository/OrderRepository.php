@@ -33,6 +33,20 @@ class OrderRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * @return Order[]
+     */
+    public function findPaidOrdersWithoutInvoice(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->where('o.status IN (:statuses)')
+            ->andWhere('o.invoicePath IS NULL')
+            ->setParameter('statuses', ['Payée', 'Suspicious'])
+            ->orderBy('o.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function ordersLast7Days(): array
     {
         $start = new \DateTime('-6 days midnight');
