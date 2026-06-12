@@ -5,9 +5,31 @@ namespace App\Entity;
 use App\Repository\ItemsOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: 'is_granted("ROLE_USER")',
+            normalizationContext: ['groups' => ['order:read']],
+        ),
+        new Get(
+            security: 'is_granted("ROLE_ADMIN") or object.getOrder().getUser() == user',
+            normalizationContext: ['groups' => ['order:read']],
+        ),
+        new Post(
+            security: 'is_granted("ROLE_USER")',
+            normalizationContext: ['groups' => ['order:read']],
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: ItemsOrderRepository::class)]
 class ItemsOrder
 {

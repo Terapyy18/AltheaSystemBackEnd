@@ -5,33 +5,77 @@ namespace App\Entity;
 use App\Repository\SupportRepository;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            security: 'is_granted("ROLE_USER")',
+            normalizationContext: ['groups' => ['support:read']],
+        ),
+        new Get(
+            security: 'is_granted("ROLE_ADMIN") or object.getUser() == user',
+            normalizationContext: ['groups' => ['support:read']],
+        ),
+        // Création de ticket : public (invités et utilisateurs connectés)
+        new Post(
+            security: 'is_granted("PUBLIC_ACCESS")',
+            denormalizationContext: ['groups' => ['support:write']],
+            normalizationContext: ['groups' => ['support:read']],
+        ),
+        // Réponse admin (reply) : admin uniquement
+        new Patch(
+            security: 'is_granted("ROLE_ADMIN")',
+            denormalizationContext: ['groups' => ['support:admin-write']],
+            normalizationContext: ['groups' => ['support:read']],
+        ),
+        new Delete(
+            security: 'is_granted("ROLE_ADMIN")',
+        ),
+    ],
+)]
 #[ORM\Entity(repositoryClass: SupportRepository::class)]
 class Support
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['support:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['support:read', 'support:write'])]
     private ?string $title = null;
 
+    // Statuts alignés sur l'admin tickets (SupportController + templates admin/tickets) :
+    // 'ouvert' | 'en_cours' | 'resolu' | 'ferme'
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[Groups(['support:read', 'support:admin-write'])]
+    private ?string $status = 'ouvert';
 
     #[ORM\Column(length: 255)]
+    #[Groups(['support:read', 'support:write'])]
     private ?string $message = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['support:read', 'support:write'])]
     private ?string $type = null;
 
-    
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['support:read', 'support:admin-write'])]
     private ?string $reply = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['support:read', 'support:write'])]
+    private ?string $email = null;
+
     #[ORM\ManyToOne(inversedBy: 'support')]
+    #[Groups(['support:read', 'support:write'])]
     private ?User $user = null;
 
     public function getId(): ?int
@@ -107,6 +151,18 @@ class Support
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }

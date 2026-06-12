@@ -54,7 +54,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Support Client', 'fas fa-headset', 'admin_tickets_index');
 
 
-        yield MenuItem::section('Systéme');
+        yield MenuItem::section('Système');
+        yield MenuItem::linkTo(SiteSettingsCrudController::class, 'Paramètres du site', 'fas fa-cog')->setAction('index');
         yield MenuItem::linkToUrl('Retour au site', 'fas fa-arrow-left', 'http://localhost:3000');
         
     }

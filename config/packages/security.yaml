@@ -51,9 +51,23 @@ security:
         - { path: ^/admin/logout, roles: PUBLIC_ACCESS }
         - { path: ^/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        # Routes API publiques (ordre important : évaluation séquentielle, premier match gagne)
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/users, roles: PUBLIC_ACCESS, methods: [POST] }
-        - { path: ^/api, roles: PUBLIC_ACCESS }
+        - { path: ^/api/search, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/products, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/product_translations, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/product_categories, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/site_settings, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/cart/validate, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/supports, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/webhooks/stripe, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/reset-password, roles: PUBLIC_ACCESS }
+        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+        - { path: ^/api/contexts, roles: PUBLIC_ACCESS }
+        - { path: ^/api$, roles: PUBLIC_ACCESS }
+        # Tout le reste de l'API exige une authentification complète
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/reset-password, roles: PUBLIC_ACCESS }
 
 when@test:
