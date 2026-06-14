@@ -7,7 +7,7 @@
  * is transactional and idempotent:
  *  - The order is looked up by stripe_payment_intent_id (the only id present
  *    on a Charge that we can correlate to our records).
- *  - If the order status is already "Remboursée", we return early — re-deliv-
+ *  - If the order status is already "refunded", we return early — re-deliv-
  *    ered events do not re-credit stock or re-send the email.
  *  - Stock is re-incremented inside a transaction with pessimistic write
  *    locks on each product, mirroring the decrement path so the two cannot
@@ -32,7 +32,7 @@ use Twig\Environment;
 
 final class RefundService
 {
-    private const REFUNDED_STATUS = 'Remboursée';
+    private const REFUNDED_STATUS = 'refunded';
 
     public function __construct(
         private readonly EntityManagerInterface $em,

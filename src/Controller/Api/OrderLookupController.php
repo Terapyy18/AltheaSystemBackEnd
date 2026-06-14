@@ -48,6 +48,34 @@ class OrderLookupController extends AbstractController
         return $this->json($this->serializeOrder($order));
     }
 
+    /**
+     * Variante publique pour les commandes invité (sans compte ni JWT).
+     *
+     * Le client invité n'a aucun token : l'autorisation repose sur le
+     * `session_id` Stripe lui-même (jeton non devinable, présent dans l'URL de
+     * retour). On n'expose que les commandes réellement invité (user === null)
+     * pour ne jamais divulguer la commande d'un utilisateur enregistré.
+     */
+    #[Route(
+        '/api/orders/guest/by-stripe-session/{sessionId}',
+        name: 'api_orders_guest_by_stripe_session',
+        requirements: ['sessionId' => '[A-Za-z0-9_]+'],
+        methods: ['GET']
+    )]
+    public function getGuestByStripeSession(string $sessionId, OrderRepository $orderRepo): JsonResponse
+    {
+        $order = $orderRepo->findOneBy(['stripeSessionId' => $sessionId]);
+        if (!$order) {
+            return $this->json(['error' => 'Order not found'], 404);
+        }
+
+        if ($order->getUser() !== null) {
+            return $this->json(['error' => 'Order not found'], 404);
+        }
+
+        return $this->json($this->serializeOrder($order));
+    }
+
     private function serializeOrder(Order $order): array
     {
         $address = $order->getAddresses();
@@ -86,6 +114,8 @@ class OrderLookupController extends AbstractController
             'stripe_session_id' => $order->getStripeSessionId(),
             'status'            => $order->getStatus(),
             'total'             => $order->getTotalPrice(),
+            'invoice_number'    => $order->getInvoiceNumber(),
+            'invoice_path'      => $order->getInvoicePath(),
             'created_at'        => $order->getCreatedAt()?->format(\DateTimeInterface::ATOM),
             'payed_at'          => $order->getPayedAt()?->format(\DateTimeInterface::ATOM),
             'items'             => $items,

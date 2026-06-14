@@ -315,6 +315,19 @@
                             Tél. : {{ user.phone }}
                         {% endif %}
                     </div>
+                {% elseif order.guestEmail %}
+                    {% if order.guestCompany %}
+                        <div class="party-name">{{ order.guestCompany }}</div>
+                    {% elseif order.addresses and order.addresses.province %}
+                        <div class="party-name">{{ order.addresses.province }}</div>
+                    {% endif %}
+                    <div class="party-detail">
+                        {{ order.guestEmail }}<br>
+                        {% if order.guestSiren %}
+                            SIREN : {{ order.guestSiren }}<br>
+                        {% endif %}
+                        <span style="color:#64748b;">Commande invité</span>
+                    </div>
                 {% else %}
                     <div class="party-detail">Client inconnu</div>
                 {% endif %}

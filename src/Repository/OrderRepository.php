@@ -41,7 +41,7 @@ class OrderRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('o')
             ->where('o.status IN (:statuses)')
             ->andWhere('o.invoicePath IS NULL')
-            ->setParameter('statuses', ['Payée', 'Suspicious'])
+            ->setParameter('statuses', ['paid', 'suspicious'])
             ->orderBy('o.createdAt', 'ASC')
             ->getQuery()
             ->getResult();

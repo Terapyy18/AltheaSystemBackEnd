@@ -51,4 +51,43 @@ class InvoiceController extends AbstractController
 
         return $response;
     }
+
+    /**
+     * Téléchargement public de la facture d'une commande invité.
+     *
+     * Pas de JWT : l'autorisation repose sur le `session_id` Stripe (non
+     * devinable) et l'accès est restreint aux commandes invité (user === null).
+     */
+    #[Route(
+        '/api/orders/guest/by-stripe-session/{sessionId}/invoice',
+        name: 'api_guest_invoice_download',
+        requirements: ['sessionId' => '[A-Za-z0-9_]+'],
+        methods: ['GET']
+    )]
+    public function downloadGuest(
+        string $sessionId,
+        OrderRepository $orderRepo,
+        InvoiceService $invoiceService,
+    ): Response {
+        $order = $orderRepo->findOneBy(['stripeSessionId' => $sessionId]);
+        if ($order === null || $order->getUser() !== null) {
+            return new JsonResponse(['error' => 'Commande introuvable'], Response::HTTP_NOT_FOUND);
+        }
+
+        $absolutePath = $invoiceService->getAbsolutePath($order);
+        if ($absolutePath === null) {
+            return new JsonResponse(
+                ['error' => 'Facture non disponible pour cette commande'],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $filename = ($order->getInvoiceNumber() ?? ('facture-' . $order->getId())) . '.pdf';
+
+        $response = new BinaryFileResponse($absolutePath);
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename);
+
+        return $response;
+    }
 }

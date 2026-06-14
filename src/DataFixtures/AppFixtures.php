@@ -116,7 +116,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
             for ($o = 0; $o < $count; $o++) {
                 $day  = random_int(1, 28);
                 $date = new \DateTime(sprintf('%d-%02d-%02d %02d:00:00', $y, $m, $day, random_int(8, 20)));
-                $this->buildOrder($products, $users, $addresses, $date, 'delivered', $manager);
+                $this->buildOrder($products, $users, $addresses, $date, 'received', $manager);
             }
         }
 
@@ -159,13 +159,13 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         $order->setUser($user);
         $order->setAddresses($address);
 
-        if (in_array($status, ['paid', 'delivered'], true)) {
+        if (in_array($status, ['paid', 'received'], true)) {
             $paidAt = clone $date;
             $paidAt->modify('+' . random_int(1, 30) . ' minutes');
             $order->setPayedAt($paidAt);
         }
 
-        if ($status === 'delivered') {
+        if ($status === 'received') {
             $shippedAt = clone $date;
             $shippedAt->modify('+1 day');
             $order->setShippedAt($shippedAt);

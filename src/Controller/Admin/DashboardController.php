@@ -34,15 +34,12 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkTo(UserCrudController::class, 'Utilisateurs', 'fas fa-users')->setAction('index');
-        yield MenuItem::linkTo(AddressesCrudController::class, 'Adresses', 'fas fa-map-marker-alt')->setAction('index');
         yield MenuItem::linkToRoute('Statistiques', 'fas fa-chart-bar', 'admin_stats');
-        
+
 
         yield MenuItem::section('Catalogue');
         yield MenuItem::linkTo(ProductCrudController::class, 'Produits', 'fas fa-box')->setAction('index');
         yield MenuItem::linkTo(ProductCategoryCrudController::class, 'Catégories', 'fas fa-tags')->setAction('index');
-        yield MenuItem::linkTo(ProductTranslationCrudController::class, 'Traductions Produits', 'fas fa-language')->setAction('index');
-        yield MenuItem::linkTo(ProductCategoryTranslationCrudController::class, 'Traductions Catégories', 'fas fa-globe')->setAction('index');
         yield MenuItem::linkTo(ProductImagesCrudController::class, 'Galerie Photos', 'fas fa-images')->setAction('index');
 
         yield MenuItem::section('Ventes');
@@ -55,6 +52,7 @@ class DashboardController extends AbstractDashboardController
 
 
         yield MenuItem::section('Système');
+        yield MenuItem::linkTo(CarouselSlideCrudController::class, 'Carrousel d\'accueil', 'fas fa-images')->setAction('index');
         yield MenuItem::linkTo(SiteSettingsCrudController::class, 'Paramètres du site', 'fas fa-cog')->setAction('index');
         yield MenuItem::linkToUrl('Retour au site', 'fas fa-arrow-left', 'http://localhost:3000');
         

@@ -24,6 +24,8 @@ class UserFixtures extends Fixture
             $user->setPhone($data['phone']);
             $user->setSirenNumber($data['siren_number']);
             $user->setRoles($data['roles']);
+            // Comptes de démo : déjà vérifiés pour ne pas bloquer la connexion.
+            $user->setIsVerified(true);
 
             $hashedPassword = $this->hasher->hashPassword($user, $data['password']);
             $user->setPassword($hashedPassword);

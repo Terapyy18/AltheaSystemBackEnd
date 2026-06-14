@@ -20,7 +20,7 @@
  *  3. If any product lacks stock → rollback, alert log, notify admin, return null.
  *  4. Decrement stock, persist Order + ItemsOrder, set stockDecremented = true.
  *  5. Compare recomputed total to Stripe's authoritative amount_total. On
- *     mismatch the order is still persisted but marked "Suspicious".
+ *     mismatch the order is still persisted but marked "suspicious".
  *  6. Flush + commit.
  *  7. AFTER commit: send the customer confirmation email. A failure here
  *     never undoes the order — emails are best-effort and just logged.
@@ -64,10 +64,17 @@ final class OrderService
     ) {
     }
 
-    public function createOrderFromStripeSession(StripeSession $session, User $user): ?Order
+    public function createOrderFromStripeSession(StripeSession $session, ?User $user): ?Order
     {
         $sessionId = (string) $session->id;
-        $logCtx    = ['stripe_session_id' => $sessionId, 'user_id' => $user->getId()];
+        $metadata  = $session->metadata ?? null;
+        $isGuest   = $user === null;
+        $guestEmail = $isGuest ? trim((string) ($metadata->guest_email ?? '')) : null;
+        $logCtx    = [
+            'stripe_session_id' => $sessionId,
+            'user_id'           => $user?->getId(),
+            'guest'             => $isGuest,
+        ];
 
         $existing = $this->orderRepo->findOneBy(['stripeSessionId' => $sessionId]);
         if ($existing !== null) {
@@ -77,7 +84,6 @@ final class OrderService
             return $existing;
         }
 
-        $metadata        = $session->metadata ?? null;
         $addressId       = $metadata->address_id ?? null;
         $rawNewAddress   = $metadata->new_address ?? null;
         $rawItems        = $metadata->items ?? '[]';
@@ -134,6 +140,11 @@ final class OrderService
 
             $order = new Order();
             $order->setUser($user);
+            if ($isGuest) {
+                $order->setGuestEmail($guestEmail);
+                $order->setGuestCompany(trim((string) ($metadata->guest_company ?? '')) ?: null);
+                $order->setGuestSiren(trim((string) ($metadata->guest_siren ?? '')) ?: null);
+            }
             $order->setAddresses($address);
             $order->setPayedAt(new \DateTime());
             $order->setStripeSessionId($sessionId);
@@ -170,7 +181,14 @@ final class OrderService
                         'requested'       => $quantity,
                         'available_stock' => $stockBefore,
                     ]);
-                    $this->notifyAdminStockIssue($sessionId, $user, $productId, $quantity, $stockBefore);
+                    $this->notifyAdminStockIssue(
+                        $sessionId,
+                        $user?->getId(),
+                        $user?->getEmail() ?? $guestEmail,
+                        $productId,
+                        $quantity,
+                        $stockBefore
+                    );
                     return null;
                 }
 
@@ -199,7 +217,7 @@ final class OrderService
             $delta      = abs($recomputedTotal - $stripeTotalEur);
             $suspicious = $delta > self::PRICE_TOLERANCE_EUR;
 
-            $order->setStatus($suspicious ? 'Suspicious' : 'Payée');
+            $order->setStatus($suspicious ? 'suspicious' : 'paid');
             $order->setTotalPrice($stripeTotalEur);
             $order->setStockDecremented(true);
 
@@ -242,7 +260,7 @@ final class OrderService
         }
 
         try {
-            $this->sendConfirmationEmail($user, $order);
+            $this->sendConfirmationEmail($order, $user, $guestEmail);
         } catch (\Throwable $e) {
             $this->logger->warning('[Order] Confirmation email failed (order still committed)', $logCtx + [
                 'order_id' => $order->getId(),
@@ -253,7 +271,7 @@ final class OrderService
         return $order;
     }
 
-    private function buildAddressFromMetadata(array $data, User $user): ?Addresses
+    private function buildAddressFromMetadata(array $data, ?User $user): ?Addresses
     {
         $street      = trim((string) ($data['address']      ?? ''));
         $city        = trim((string) ($data['city']         ?? ''));
@@ -278,6 +296,15 @@ final class OrderService
 
     public function handleSessionCompleted(StripeSession $session): void
     {
+        $metadata = $session->metadata ?? null;
+        $isGuest  = (string) ($metadata->is_guest ?? '') === '1';
+
+        // Commande invité : aucun compte rattaché, l'identité vient des metadata.
+        if ($isGuest) {
+            $this->createOrderFromStripeSession($session, null);
+            return;
+        }
+
         $userId = $session->client_reference_id ?? null;
         $user   = $userId !== null ? $this->userRepo->find((int) $userId) : null;
 
@@ -351,14 +378,14 @@ final class OrderService
             return;
         }
 
-        if ($order->getStatus() === 'Echec paiement') {
+        if ($order->getStatus() === 'payment_failed') {
             $this->logger->info('[Stripe] payment_failed already recorded — idempotent no-op', $logCtx + [
                 'order_id' => $order->getId(),
             ]);
             return;
         }
 
-        $order->setStatus('Echec paiement');
+        $order->setStatus('payment_failed');
         $this->em->flush();
 
         $this->logger->warning('[Stripe] Order marked as payment failed', $logCtx + [
@@ -431,15 +458,25 @@ final class OrderService
         }
     }
 
-    private function sendConfirmationEmail(User $user, Order $order): void
+    private function sendConfirmationEmail(Order $order, ?User $user, ?string $guestEmail = null): void
     {
-        $recipient = $user->getEmail();
+        $recipient = $user?->getEmail() ?? $guestEmail;
         if (!$recipient) {
-            $this->logger->warning('[Order] Skipping confirmation email — user has no address', [
+            $this->logger->warning('[Order] Skipping confirmation email — no recipient email', [
                 'order_id' => $order->getId(),
-                'user_id'  => $user->getId(),
+                'user_id'  => $user?->getId(),
             ]);
             return;
+        }
+
+        // Pour un invité (B2B), le « client » est l'entreprise : on personnalise
+        // l'email avec sa raison sociale (le template attend firstName/lastName).
+        $recipientName = $user;
+        if ($user === null) {
+            $recipientName = [
+                'firstName' => (string) ($order->getGuestCompany() ?? ''),
+                'lastName'  => '',
+            ];
         }
 
         $items = [];
@@ -466,14 +503,17 @@ final class OrderService
         $frontendUrl = (string) ($_ENV['FRONTEND_URL'] ?? 'http://localhost:3000');
         $fromAddress = (string) ($_ENV['MAILER_FROM'] ?? 'no-reply@althea-systems.com');
 
+        $isGuest = $user === null;
+
         $html = $this->twig->render('emails/order_confirmation.html.twig', [
-            'user'         => $user,
+            'user'         => $recipientName,
             'order'        => $order,
             'items'        => $items,
             'totalAmount'  => $order->getTotalPrice() ?? $totalAmount,
             'address'      => $order->getAddresses(),
-            'orders_url'   => $frontendUrl . '/compte/commandes',
-            'invoice_note' => 'available_in_account',
+            // Un invité n'a pas d'espace compte : on le renvoie vers l'accueil.
+            'orders_url'   => $isGuest ? $frontendUrl : $frontendUrl . '/compte/commandes',
+            'invoice_note' => $isGuest ? 'guest' : 'available_in_account',
         ]);
 
         $email = (new Email())
@@ -492,7 +532,8 @@ final class OrderService
 
     private function notifyAdminStockIssue(
         string $sessionId,
-        User $user,
+        ?int $userId,
+        ?string $contactEmail,
         int $productId,
         int $requested,
         int $available
@@ -501,7 +542,8 @@ final class OrderService
         if ($adminEmail === '') {
             $this->logger->alert('[Order] Admin alert SKIPPED — ADMIN_EMAIL not set', [
                 'stripe_session_id' => $sessionId,
-                'user_id'           => $user->getId(),
+                'user_id'           => $userId,
+                'contact_email'     => $contactEmail,
                 'product_id'        => $productId,
                 'requested'         => $requested,
                 'available'         => $available,
@@ -516,11 +558,11 @@ final class OrderService
                 ->subject('[ALERTE] Stock insuffisant après paiement Stripe')
                 ->text(sprintf(
                     "Stock insuffisant détecté lors du traitement d'un webhook payé.\n\n" .
-                    "Session Stripe: %s\nUtilisateur: %d (%s)\nProduit: %d\nDemandé: %d\nDisponible: %d\n\n" .
+                    "Session Stripe: %s\nAcheteur: %s (%s)\nProduit: %d\nDemandé: %d\nDisponible: %d\n\n" .
                     "Le paiement a été encaissé mais l'Order n'a PAS été créée. Action manuelle requise.",
                     $sessionId,
-                    (int) $user->getId(),
-                    (string) $user->getEmail(),
+                    $userId !== null ? ('user #' . $userId) : 'invité',
+                    (string) $contactEmail,
                     $productId,
                     $requested,
                     $available
