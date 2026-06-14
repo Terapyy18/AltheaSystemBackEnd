@@ -98,8 +98,34 @@ class Order
     #[Groups(['order:read'])]
     private ?string $stripePaymentIntentId = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
+    /**
+     * Email de l'acheteur lorsque la commande est passée en mode invité
+     * (user === null). Pour une commande d'un compte connecté, ce champ
+     * reste null et l'email est porté par la relation User.
+     */
+    #[ORM\Column(name: 'guest_email', length: 255, nullable: true)]
+    #[Groups(['order:read'])]
+    private ?string $guestEmail = null;
+
+    /**
+     * Raison sociale de l'acheteur en mode invité (plateforme B2B : le client
+     * d'une commande invité est une entreprise). Null pour un compte connecté.
+     */
+    #[ORM\Column(name: 'guest_company', length: 255, nullable: true)]
+    #[Groups(['order:read'])]
+    private ?string $guestCompany = null;
+
+    /**
+     * Numéro SIREN (9 chiffres) ou SIRET (14) de l'entreprise invitée, requis
+     * pour la facturation B2B. Null pour un compte connecté (le SIREN est alors
+     * porté par la relation User).
+     */
+    #[ORM\Column(name: 'guest_siren', length: 14, nullable: true)]
+    #[Groups(['order:read'])]
+    private ?string $guestSiren = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true)]
     #[Groups(['order:read', 'order:write'])]
     private ?User $user = null;
 
@@ -257,6 +283,48 @@ class Order
     {
         $this->stripePaymentIntentId = $stripePaymentIntentId;
         return $this;
+    }
+
+    public function getGuestEmail(): ?string
+    {
+        return $this->guestEmail;
+    }
+
+    public function setGuestEmail(?string $guestEmail): static
+    {
+        $this->guestEmail = $guestEmail;
+        return $this;
+    }
+
+    public function getGuestCompany(): ?string
+    {
+        return $this->guestCompany;
+    }
+
+    public function setGuestCompany(?string $guestCompany): static
+    {
+        $this->guestCompany = $guestCompany;
+        return $this;
+    }
+
+    public function getGuestSiren(): ?string
+    {
+        return $this->guestSiren;
+    }
+
+    public function setGuestSiren(?string $guestSiren): static
+    {
+        $this->guestSiren = $guestSiren;
+        return $this;
+    }
+
+    /**
+     * Email de contact de la commande, qu'elle soit passée par un compte
+     * connecté ou en mode invité.
+     */
+    public function getContactEmail(): ?string
+    {
+        return $this->user?->getEmail() ?? $this->guestEmail;
     }
 
     public function getUser(): ?User

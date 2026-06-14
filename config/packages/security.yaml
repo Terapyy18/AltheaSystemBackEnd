@@ -38,6 +38,7 @@ security:
             pattern: ^/
             stateless: true
             provider: app_user_provider
+            user_checker: App\Security\UserChecker
             json_login:
                 check_path: /api/login
                 username_path: email
@@ -59,10 +60,14 @@ security:
         - { path: ^/api/product_translations, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/product_categories, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/site_settings, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/carousel_slides, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/cart/validate, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/checkout/session/guest, roles: PUBLIC_ACCESS, methods: [POST] }
+        - { path: ^/api/orders/guest/by-stripe-session, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/supports, roles: PUBLIC_ACCESS, methods: [POST] }
         - { path: ^/api/webhooks/stripe, roles: PUBLIC_ACCESS, methods: [POST] }
         - { path: ^/api/reset-password, roles: PUBLIC_ACCESS }
+        - { path: ^/api/verify-email, roles: PUBLIC_ACCESS, methods: [GET] }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/contexts, roles: PUBLIC_ACCESS }
         - { path: ^/api$, roles: PUBLIC_ACCESS }

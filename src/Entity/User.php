@@ -105,6 +105,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $authCode = null;
 
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['user:read'])]
+    private bool $isVerified = false;
+
     /**
      * @var Collection<int, Addresses>
      */
@@ -358,6 +362,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     public function getEmailAuthRecipient(): string
     {
         return $this->email;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function getIsVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 
     public function getEmailAuthCode(): string

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 30px; }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .header { background: #0d9488; padding: 24px 30px; color: #fff; }
+        .header h1 { font-size: 20px; margin: 0; }
+        .header p  { font-size: 13px; margin: 6px 0 0; opacity: 0.85; }
+        .body { padding: 30px; }
+        .btn-wrapper { text-align: center; margin: 28px 0; }
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #0d9488;
+            color: #fff !important;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #856404;
+            margin-top: 24px;
+        }
+        .divider { border: none; border-top: 1px solid #f1f3f5; margin: 24px 0; }
+        .lang-en { color: #888; font-size: 13px; }
+        .url-fallback {
+            font-size: 12px;
+            color: #aaa;
+            word-break: break-all;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 16px 30px;
+            font-size: 12px;
+            color: #aaa;
+            text-align: center;
+            border-top: 1px solid #f1f3f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AltheaSystem</h1>
+            <p>Confirmation de votre adresse email · Email confirmation</p>
+        </div>
+        <div class="body">
+            <p style="font-size:15px; color:#333;">Bonjour <strong>{{ userName }}</strong>,</p>
+            <p style="font-size:14px; color:#555; margin-top:12px; line-height:1.6;">
+                Bienvenue sur AltheaSystem ! Pour activer votre compte et pouvoir vous connecter,
+                veuillez confirmer votre adresse email en cliquant sur le bouton ci-dessous.
+            </p>
+
+            <div class="btn-wrapper">
+                <a href="{{ verifyUrl }}" class="btn">Confirmer mon email</a>
+            </div>
+
+            <div class="warning">
+                ⚠️ Ce lien expire dans {{ expiresAtMessageData['%count%'] ?? 1 }} heure(s).<br>
+                Si vous n'êtes pas à l'origine de cette inscription, ignorez simplement cet email.
+            </div>
+
+            <hr class="divider">
+
+            <p class="lang-en">
+                Welcome to AltheaSystem! To activate your account and sign in, please confirm
+                your email address by clicking the <strong>Confirm my email</strong> button above.
+                This link will expire in {{ expiresAtMessageData['%count%'] ?? 1 }} hour(s).
+            </p>
+
+            <hr class="divider">
+
+            <p style="font-size:13px; color:#888;">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br>
+            <span class="lang-en">If the button does not work, copy this link into your browser:</span></p>
+            <p class="url-fallback">{{ verifyUrl }}</p>
+        </div>
+        <div class="footer">
+            © AltheaSystem — Cet email est automatique, merci de ne pas y répondre directement.
+        </div>
+    </div>
+</body>
+</html>

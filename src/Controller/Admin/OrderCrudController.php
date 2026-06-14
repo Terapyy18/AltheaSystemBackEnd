@@ -70,18 +70,24 @@ class OrderCrudController extends AbstractCrudController
 
             ChoiceField::new('status', 'Statut')
                 ->setChoices([
-                    'En attente' => 'pending',
-                    'Payée'      => 'paid',
-                    'Expédiée'   => 'shipped',
-                    'Livrée'     => 'received',
-                    'Annulée'    => 'cancelled',
+                    'En attente'        => 'pending',
+                    'Payée'             => 'paid',
+                    'Expédiée'          => 'shipped',
+                    'Livrée'            => 'received',
+                    'Annulée'           => 'cancelled',
+                    'Remboursée'        => 'refunded',
+                    'Échec de paiement' => 'payment_failed',
+                    'En vérification'   => 'suspicious',
                 ])
                 ->renderAsBadges([
-                    'pending'   => 'warning',
-                    'paid'      => 'info',
-                    'shipped'   => 'primary',
-                    'received'  => 'success',
-                    'cancelled' => 'danger',
+                    'pending'        => 'warning',
+                    'paid'           => 'info',
+                    'shipped'        => 'primary',
+                    'received'       => 'success',
+                    'cancelled'      => 'danger',
+                    'refunded'       => 'danger',
+                    'payment_failed' => 'danger',
+                    'suspicious'     => 'warning',
                 ]),
 
             NumberField::new('totalPrice', 'Montant Total (€)')

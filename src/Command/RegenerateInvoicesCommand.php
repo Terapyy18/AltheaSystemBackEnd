@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:invoices:regenerate',
-    description: 'Génère les factures PDF manquantes pour toutes les commandes payées (statut Payée ou Suspicious)',
+    description: 'Génère les factures PDF manquantes pour toutes les commandes payées (statut paid ou suspicious)',
 )]
 class RegenerateInvoicesCommand extends Command
 {
