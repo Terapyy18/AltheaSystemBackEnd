@@ -29,14 +29,20 @@ class SiteSettingsCrudController extends AbstractCrudController
     {
         yield IdField::new('id')->onlyOnIndex();
         yield TextField::new('settingKey', 'Clé')
-            ->setDisabled($pageName === Crud::PAGE_EDIT)
-            ->setHelp('Identifiant technique non modifiable après création');
+            ->onlyWhenCreating();
         yield TextareaField::new('valueFr', 'Texte (FR)')
             ->setNumOfRows(4);
         yield TextareaField::new('valueEn', 'Texte (EN)')
             ->setNumOfRows(4);
-        yield TextField::new('description', 'Description (usage admin)')
+        yield TextareaField::new('valueHe', 'Texte (HE — hébreu, RTL)')
             ->setRequired(false)
+            ->setNumOfRows(4)
+            ->setHelp('Langue droite-à-gauche. Laisser vide si non traduit.')
+            ->hideOnIndex();
+        yield TextareaField::new('valueZh', 'Texte (ZH — chinois)')
+            ->setRequired(false)
+            ->setNumOfRows(4)
+            ->setHelp('Laisser vide si non traduit.')
             ->hideOnIndex();
     }
 }

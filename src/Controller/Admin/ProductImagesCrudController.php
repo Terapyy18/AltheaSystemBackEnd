@@ -22,9 +22,6 @@ class ProductImagesCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->disable(Action::NEW)
-            ->disable(Action::DELETE)
-            ->disable(Action::EDIT)                         // Lecture seule uniquement
             ->add(Crud::PAGE_INDEX, Action::DETAIL);        // Ajoute le bouton "Voir" (œil) sur la liste
     }
 
@@ -38,9 +35,9 @@ class ProductImagesCrudController extends AbstractCrudController
                 ->setBasePath('')
                 ->hideOnForm(),
 
-            // URL brute au format texte cliquable (Page Détail uniquement)
+            // URL de l'image, modifiable (formulaires) et cliquable (Page Détail)
             UrlField::new('imageUrl', 'URL de l\'image')
-                ->onlyOnDetail(),
+                ->hideOnIndex(),
 
             // Relation avec le produit associé (Index et Page Détail)
             AssociationField::new('product', 'Produit associé'),

@@ -99,5 +99,29 @@ class CarouselSlide
     #[Groups(['carousel:read'])]
     public function getProductId(): ?int { return $this->product?->getId(); }
 
+    /**
+     * Image (thumbnail) du produit lié, exposée pour servir d'image de fond du slide
+     * lorsqu'aucune image n'a été uploadée explicitement (imageFilename vide).
+     */
+    #[Groups(['carousel:read'])]
+    public function getProductThumbnail(): ?string { return $this->product?->getThumbnail(); }
+
+    /**
+     * Titres traduits (indexés par langue : ['fr' => ..., 'en' => ...]) du produit lié.
+     * Le frontend les utilise pour afficher le nom du produit comme titre du slide.
+     */
+    #[Groups(['carousel:read'])]
+    public function getProductTitles(): array
+    {
+        if (!$this->product) {
+            return [];
+        }
+        $titles = [];
+        foreach ($this->product->getProductTranslations() as $translation) {
+            $titles[$translation->getLanguage()] = $translation->getTitle();
+        }
+        return $titles;
+    }
+
     public function __toString(): string { return $this->title ?? 'Slide'; }
 }

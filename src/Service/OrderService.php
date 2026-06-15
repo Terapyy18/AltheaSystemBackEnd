@@ -530,6 +530,84 @@ final class OrderService
         ]);
     }
 
+    /**
+     * Envoie l'email « votre commande a été expédiée » au client (compte ou invité).
+     */
+    public function sendShippedEmail(Order $order): void
+    {
+        $this->sendOrderStatusEmail(
+            $order,
+            'emails/order_shipped.html.twig',
+            sprintf('Votre commande #%d a été expédiée - Althea Systems', $order->getId()),
+            'shipped'
+        );
+    }
+
+    /**
+     * Envoie l'email « votre commande a été livrée » au client (compte ou invité).
+     */
+    public function sendDeliveredEmail(Order $order): void
+    {
+        $this->sendOrderStatusEmail(
+            $order,
+            'emails/order_delivered.html.twig',
+            sprintf('Votre commande #%d a été livrée - Althea Systems', $order->getId()),
+            'delivered'
+        );
+    }
+
+    /**
+     * Envoi mutualisé d'un email de suivi de commande (expédiée / livrée) au client
+     * connecté ou invité B2B. Best-effort : un échec est journalisé sans propager.
+     */
+    private function sendOrderStatusEmail(Order $order, string $template, string $subject, string $label): void
+    {
+        $user      = $order->getUser();
+        $recipient = $user?->getEmail() ?? $order->getGuestEmail();
+
+        if (!$recipient) {
+            $this->logger->warning(sprintf('[Order] Skipping %s email — no recipient email', $label), [
+                'order_id' => $order->getId(),
+            ]);
+            return;
+        }
+
+        // Nom affiché : prénom du client connecté, ou raison sociale pour un invité B2B.
+        $customerName = $user !== null
+            ? (string) ($user->getFirstName() ?? '')
+            : (string) ($order->getGuestCompany() ?? '');
+
+        $frontendUrl = $this->frontendUrl();
+        $fromAddress = (string) ($_ENV['MAILER_FROM'] ?? 'no-reply@althea-systems.com');
+
+        try {
+            $html = $this->twig->render($template, [
+                'order'        => $order,
+                'customerName' => $customerName,
+                'address'      => $order->getAddresses(),
+                'orders_url'   => $user !== null ? $frontendUrl . '/compte/commandes' : $frontendUrl,
+            ]);
+
+            $email = (new Email())
+                ->from($fromAddress)
+                ->to($recipient)
+                ->subject($subject)
+                ->html($html);
+
+            $this->mailer->send($email);
+
+            $this->logger->info(sprintf('[Order] %s email sent', ucfirst($label)), [
+                'order_id' => $order->getId(),
+                'to'       => $recipient,
+            ]);
+        } catch (\Throwable $e) {
+            $this->logger->warning(sprintf('[Order] %s email failed', ucfirst($label)), [
+                'order_id' => $order->getId(),
+                'error'    => $e->getMessage(),
+            ]);
+        }
+    }
+
     private function notifyAdminStockIssue(
         string $sessionId,
         ?int $userId,

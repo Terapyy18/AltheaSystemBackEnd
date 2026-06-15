@@ -15,12 +15,55 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use App\Service\OrderService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class OrderCrudController extends AbstractCrudController
 {
-    public function __construct(private readonly RouterInterface $router)
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly OrderService $orderService,
+    ) {
+    }
+
+    /**
+     * Détecte le passage manuel du statut vers « shipped » ou « received » lors de
+     * l'édition d'une commande dans EasyAdmin : on horodate l'évènement (si ce n'est
+     * pas déjà fait) et on déclenche l'email correspondant (expédiée / livrée).
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        $justShipped = false;
+        $justDelivered = false;
+
+        if ($entityInstance instanceof Order) {
+            $originalData = $entityManager->getUnitOfWork()->getOriginalEntityData($entityInstance);
+            $previousStatus = $originalData['status'] ?? null;
+            $newStatus = $entityInstance->getStatus();
+
+            if ($newStatus === 'shipped' && $previousStatus !== 'shipped') {
+                $justShipped = true;
+                if ($entityInstance->getShippedAt() === null) {
+                    $entityInstance->setShippedAt(new \DateTime());
+                }
+            } elseif ($newStatus === 'received' && $previousStatus !== 'received') {
+                $justDelivered = true;
+                if ($entityInstance->getReceivedAt() === null) {
+                    $entityInstance->setReceivedAt(new \DateTime());
+                }
+            }
+        }
+
+        parent::updateEntity($entityManager, $entityInstance);
+
+        if ($entityInstance instanceof Order) {
+            if ($justShipped) {
+                $this->orderService->sendShippedEmail($entityInstance);
+            } elseif ($justDelivered) {
+                $this->orderService->sendDeliveredEmail($entityInstance);
+            }
+        }
     }
 
     public static function getEntityFqcn(): string

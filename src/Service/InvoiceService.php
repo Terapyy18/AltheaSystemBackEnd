@@ -14,8 +14,6 @@ use Twig\Environment;
 
 final class InvoiceService
 {
-    private const TVA_RATE = 0.20;
-
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly Environment $twig,
@@ -38,9 +36,7 @@ final class InvoiceService
         try {
             // Préparer les données de rendu avant d'allouer le numéro
             $lines       = $this->buildLines($order);
-            $totalTtc    = (float) ($order->getTotalPrice() ?? 0.0);
-            $totalHt     = $totalTtc / (1 + self::TVA_RATE);
-            $totalTva    = $totalTtc - $totalHt;
+            $total       = (float) ($order->getTotalPrice() ?? 0.0);
             $invoiceDate = $order->getPayedAt() ?? $order->getCreatedAt() ?? new \DateTime();
 
             // Allouer le numéro de facture (séquence PostgreSQL — non transactionnel)
@@ -51,10 +47,7 @@ final class InvoiceService
                 'invoice_number' => $invoiceNumber,
                 'invoice_date'   => $invoiceDate,
                 'lines'          => $lines,
-                'total_ht'       => $totalHt,
-                'total_tva'      => $totalTva,
-                'total_ttc'      => $totalTtc,
-                'tva_rate_pct'   => (int) (self::TVA_RATE * 100),
+                'total'          => $total,
             ]);
 
             $dir = $this->projectDir . '/var/invoices';
@@ -127,7 +120,7 @@ final class InvoiceService
     }
 
     /**
-     * @return array<int, array{sku: string, title: string, quantity: int, unit_price_ttc: float, unit_price_ht: float, line_ttc: float, line_ht: float}>
+     * @return array<int, array{sku: string, title: string, quantity: int, unit_price: float, line_total: float}>
      */
     private function buildLines(Order $order): array
     {
@@ -153,20 +146,15 @@ final class InvoiceService
                 }
             }
 
-            $unitTtc  = (float) $item->getPrice();
-            $unitHt   = $unitTtc / (1 + self::TVA_RATE);
-            $qty      = (int) $item->getQuantity();
-            $lineTtc  = $unitTtc * $qty;
-            $lineHt   = $unitHt * $qty;
+            $unitPrice = (float) $item->getPrice();
+            $qty       = (int) $item->getQuantity();
 
             $lines[] = [
-                'sku'            => $sku,
-                'title'          => $title ?? ('Produit #' . ($product?->getId() ?? '?')),
-                'quantity'       => $qty,
-                'unit_price_ttc' => $unitTtc,
-                'unit_price_ht'  => $unitHt,
-                'line_ttc'       => $lineTtc,
-                'line_ht'        => $lineHt,
+                'sku'        => $sku,
+                'title'      => $title ?? ('Produit #' . ($product?->getId() ?? '?')),
+                'quantity'   => $qty,
+                'unit_price' => $unitPrice,
+                'line_total' => $unitPrice * $qty,
             ];
         }
 
