@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Facture {{ invoice_number }}</title>
     <style>
+        @page { margin: 2cm 1.8cm; }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -259,7 +261,6 @@
                     12 Avenue de la Santé<br>
                     75013 Paris, France<br>
                     SIREN : 123 456 789<br>
-                    TVA Intracommunautaire : FR12 123456789<br>
                     contact@althea-systems.com
                 </div>
             </td>
@@ -296,8 +297,7 @@
                 <div class="party-detail">
                     12 Avenue de la Santé<br>
                     75013 Paris, France<br>
-                    SIREN : 123 456 789<br>
-                    TVA : FR12 123456789
+                    SIREN : 123 456 789
                 </div>
             </td>
             <td style="width:4%;"></td>
@@ -352,12 +352,11 @@
     <table class="items-table" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th style="width:12%;">Réf.</th>
-                <th style="width:38%;">Désignation</th>
-                <th class="right" style="width:8%;">Qté</th>
-                <th class="right" style="width:14%;">Prix unitaire HT</th>
-                <th class="right" style="width:14%;">TVA {{ tva_rate_pct }}%</th>
-                <th class="right" style="width:14%;">Total TTC</th>
+                <th style="width:14%;">Réf.</th>
+                <th style="width:46%;">Désignation</th>
+                <th class="right" style="width:10%;">Qté</th>
+                <th class="right" style="width:15%;">Prix unitaire</th>
+                <th class="right" style="width:15%;">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -372,13 +371,12 @@
                     </td>
                     <td>{{ line.title }}</td>
                     <td class="center">{{ line.quantity }}</td>
-                    <td class="right">{{ line.unit_price_ht|number_format(2, ',', ' ') }} €</td>
-                    <td class="right">{{ (line.unit_price_ttc - line.unit_price_ht)|number_format(2, ',', ' ') }} €</td>
-                    <td class="right">{{ line.line_ttc|number_format(2, ',', ' ') }} €</td>
+                    <td class="right">{{ line.unit_price|number_format(2, ',', ' ') }} €</td>
+                    <td class="right">{{ line.line_total|number_format(2, ',', ' ') }} €</td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="6" style="text-align:center; color:#718096; padding:12px;">
+                    <td colspan="5" style="text-align:center; color:#718096; padding:12px;">
                         Aucun article
                     </td>
                 </tr>
@@ -395,16 +393,8 @@
             <td style="width:260px; vertical-align:top;">
                 <table class="totals-row" cellpadding="0" cellspacing="0" style="width:100%; border:1px solid #e2e8f0; border-radius:4px;">
                     <tr>
-                        <td class="total-label" style="padding:7px 12px;">Total HT</td>
-                        <td class="total-amount" style="padding:7px 12px; text-align:right;">{{ total_ht|number_format(2, ',', ' ') }} €</td>
-                    </tr>
-                    <tr>
-                        <td class="total-label" style="padding:7px 12px; border-top:1px solid #edf2f7;">TVA {{ tva_rate_pct }}%</td>
-                        <td class="total-amount" style="padding:7px 12px; text-align:right; border-top:1px solid #edf2f7;">{{ total_tva|number_format(2, ',', ' ') }} €</td>
-                    </tr>
-                    <tr>
-                        <td style="padding:9px 12px; background:#0d9488; color:#fff; font-weight:bold; font-size:12px;">Total TTC</td>
-                        <td style="padding:9px 12px; text-align:right; background:#0d9488; color:#fff; font-weight:bold; font-size:12px;">{{ total_ttc|number_format(2, ',', ' ') }} €</td>
+                        <td style="padding:9px 12px; background:#0d9488; color:#fff; font-weight:bold; font-size:12px;">Total</td>
+                        <td style="padding:9px 12px; text-align:right; background:#0d9488; color:#fff; font-weight:bold; font-size:12px;">{{ total|number_format(2, ',', ' ') }} €</td>
                     </tr>
                 </table>
             </td>

@@ -42,7 +42,7 @@ class SiteSettings
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Groups(['site_settings:read', 'site_settings:write'])]
-    private ?string $valueAr = null;
+    private ?string $valueHe = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Groups(['site_settings:read', 'site_settings:write'])]
@@ -63,8 +63,8 @@ class SiteSettings
     public function getValueEn(): string { return $this->valueEn; }
     public function setValueEn(string $valueEn): static { $this->valueEn = $valueEn; return $this; }
 
-    public function getValueAr(): ?string { return $this->valueAr; }
-    public function setValueAr(?string $valueAr): static { $this->valueAr = $valueAr; return $this; }
+    public function getValueHe(): ?string { return $this->valueHe; }
+    public function setValueHe(?string $valueHe): static { $this->valueHe = $valueHe; return $this; }
 
     public function getValueZh(): ?string { return $this->valueZh; }
     public function setValueZh(?string $valueZh): static { $this->valueZh = $valueZh; return $this; }

@@ -28,7 +28,7 @@ class ProductFixtures extends Fixture
             // ── MOBILITÉ (6) ──────────────────────────────────────────────────────
             [
                 'sku'         => 'MOB-001',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/49865-home_default/deambulateur-rollator-pliant-boston.jpg',
                 'price'       => 189.99,
                 'promo_price' => 159.99,
                 'stock'       => 15,
@@ -38,8 +38,8 @@ class ProductFixtures extends Fixture
                 'length'      => 60.0,
                 'categories'  => ['Mobilité'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=400',
-                    'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=400',
+                    'https://www.materielmedical.fr/53877-home_default/deambulateur-rollator-londres-light.jpg',
+                    'https://www.materielmedical.fr/54856-home_default/deambulateur-pliant-miami.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -58,7 +58,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'MOB-002',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/27513-home_default/fauteuil-roulant-en-aluminium-queen-assise-46-cm-.jpg',
                 'price'       => 249.99,
                 'promo_price' => null,
                 'stock'       => 8,
@@ -68,9 +68,8 @@ class ProductFixtures extends Fixture
                 'length'      => 65.0,
                 'categories'  => ['Mobilité'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
-                    'https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=400',
-                    'https://images.unsplash.com/photo-1617394484097-5a9c5f81f8b7?w=400',
+                    'https://www.materielmedical.fr/24228-home_default/fauteuil-roulant-assie-50-cm-standard-chrome.jpg',
+                    'https://www.materielmedical.fr/24206-home_default/fauteuil-roulant-extra-large-assise-55-cm.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -89,7 +88,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'MOB-003',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/51239-home_default/cannes-de-marche-alu-reglables.jpg',
                 'price'       => 89.99,
                 'promo_price' => 69.99,
                 'stock'       => 25,
@@ -99,8 +98,8 @@ class ProductFixtures extends Fixture
                 'length'      => 25.0,
                 'categories'  => ['Mobilité'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400',
-                    'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
+                    'https://www.materielmedical.fr/54838-home_default/canne-de-marche-reglable-4-pop.jpg',
+                    'https://www.materielmedical.fr/54857-home_default/canne-de-marche-quadripode-quadra.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -119,7 +118,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'MOB-004',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/27479-home_default/fauteuil-roulant-gima-deluxe.jpg',
                 'price'       => 349.99,
                 'promo_price' => 299.99,
                 'stock'       => 5,
@@ -129,9 +128,8 @@ class ProductFixtures extends Fixture
                 'length'      => 70.0,
                 'categories'  => ['Mobilité'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=400',
-                    'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
-                    'https://images.unsplash.com/photo-1617394484097-5a9c5f81f8b7?w=400',
+                    'https://www.materielmedical.fr/57677-home_default/fauteuil-de-transfert-esculape.jpg',
+                    'https://www.materielmedical.fr/54423-home_default/fauteuil-de-transfert-pliant-stan-up.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -150,7 +148,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'MOB-005',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1617394484097-5a9c5f81f8b7?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/57781-home_default/bequille-axilliaire-universelles-et-extra-reglables.jpg',
                 'price'       => 129.99,
                 'promo_price' => null,
                 'stock'       => 18,
@@ -160,8 +158,8 @@ class ProductFixtures extends Fixture
                 'length'      => 30.0,
                 'categories'  => ['Mobilité'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=400',
-                    'https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=400',
+                    'https://www.materielmedical.fr/57729-home_default/paire-de-bequilles-herdegen-evolution.jpg',
+                    'https://www.materielmedical.fr/57725-home_default/bequille-legere-en-aluminium.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -180,7 +178,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'MOB-006',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/54848-home_default/canne-de-marche-tripode-reglable-herdegen.jpg',
                 'price'       => 59.99,
                 'promo_price' => 49.99,
                 'stock'       => 30,
@@ -190,8 +188,8 @@ class ProductFixtures extends Fixture
                 'length'      => 12.0,
                 'categories'  => ['Mobilité'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1587224251899-0c0c49f5283c?w=400',
-                    'https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=400',
+                    'https://www.materielmedical.fr/54857-home_default/canne-de-marche-quadripode-quadra.jpg',
+                    'https://www.materielmedical.fr/54838-home_default/canne-de-marche-reglable-4-pop.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -212,7 +210,7 @@ class ProductFixtures extends Fixture
             // ── DIAGNOSTIC (7) ────────────────────────────────────────────────────
             [
                 'sku'         => 'DIAG-001',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/56544-home_default/thermometre-infrarouge-gima-a200.jpg',
                 'price'       => 45.99,
                 'promo_price' => 39.99,
                 'stock'       => 50,
@@ -222,8 +220,7 @@ class ProductFixtures extends Fixture
                 'length'      => 12.0,
                 'categories'  => ['Diagnostic'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
-                    'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
+                    'https://www.materielmedical.fr/54415-home_default/couvre-sonde-pour-thermometre-braun.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -242,7 +239,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'DIAG-002',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/34014-home_default/tensiometre-electronique-au-bras-spengler-autotensio-spg-440.jpg',
                 'price'       => 79.99,
                 'promo_price' => null,
                 'stock'       => 30,
@@ -252,8 +249,8 @@ class ProductFixtures extends Fixture
                 'length'      => 15.0,
                 'categories'  => ['Diagnostic'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
-                    'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400',
+                    'https://www.materielmedical.fr/30970-home_default/tensiometre-electronique-de-poignet-omron-rs7-automatique.jpg',
+                    'https://www.materielmedical.fr/38433-home_default/brassard-tensiometres-spengler-lian-nano-nm-metal.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -272,7 +269,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'DIAG-003',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/43985-home_default/stethoscope-3m-littmann-classic-iii.jpg',
                 'price'       => 129.99,
                 'promo_price' => 99.99,
                 'stock'       => 12,
@@ -282,9 +279,7 @@ class ProductFixtures extends Fixture
                 'length'      => 20.0,
                 'categories'  => ['Diagnostic'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
-                    'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
-                    'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400',
+                    'https://www.materielmedical.fr/53175-home_default/peluche-cache-stethoscope.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -303,7 +298,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'DIAG-004',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/30673-home_default/oxymetre-de-pouls-spengler-oxystart.jpg',
                 'price'       => 34.99,
                 'promo_price' => 29.99,
                 'stock'       => 60,
@@ -313,8 +308,7 @@ class ProductFixtures extends Fixture
                 'length'      => 10.0,
                 'categories'  => ['Diagnostic'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
-                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
+                    'https://www.materielmedical.fr/30673-home_default/oxymetre-de-pouls-spengler-oxystart.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -333,7 +327,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'DIAG-005',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/43851-home_default/electrocardiographe-ecg-kardiamobile-6l-omron.jpg',
                 'price'       => 199.99,
                 'promo_price' => null,
                 'stock'       => 10,
@@ -343,8 +337,8 @@ class ProductFixtures extends Fixture
                 'length'      => 25.0,
                 'categories'  => ['Diagnostic'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
-                    'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
+                    'https://www.materielmedical.fr/39272-home_default/lot-de-600-electrodes-ecg-ambu-white-sensor-ws-00-s-gel-solide-a-pression.jpg',
+                    'https://www.materielmedical.fr/52590-home_default/papier-pour-ecg-edan-10-rouleaux-ou-liasses.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -363,7 +357,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'DIAG-006',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1587467512961-120760940315?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/55783-home_default/kit-complet-glucometre-jt-100-spengler.jpg',
                 'price'       => 24.99,
                 'promo_price' => 19.99,
                 'stock'       => 80,
@@ -373,8 +367,7 @@ class ProductFixtures extends Fixture
                 'length'      => 9.0,
                 'categories'  => ['Diagnostic'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=400',
-                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
+                    'https://www.materielmedical.fr/55790-home_default/bandelettes-pour-glucometre-jt-100-spengler-boite-de-50.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -393,7 +386,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'DIAG-007',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/55055-home_default/otoscope-smartled-spengler-x-luxamed-edition-anneau-led.jpg',
                 'price'       => 59.99,
                 'promo_price' => 49.99,
                 'stock'       => 25,
@@ -403,8 +396,7 @@ class ProductFixtures extends Fixture
                 'length'      => 14.0,
                 'categories'  => ['Diagnostic'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=400',
-                    'https://images.unsplash.com/photo-1615486511484-92e172cc4fe0?w=400',
+                    'https://www.materielmedical.fr/59544-home_default/speculums-auriculaires-jetables-spengler-boite-de-250.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -425,7 +417,7 @@ class ProductFixtures extends Fixture
             // ── HYGIÈNE (7) ───────────────────────────────────────────────────────
             [
                 'sku'         => 'HYG-001',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/34542-home_default/gel-hydroalcoolique-aniosgel-85-npc.jpg',
                 'price'       => 29.99,
                 'promo_price' => 24.99,
                 'stock'       => 100,
@@ -435,8 +427,8 @@ class ProductFixtures extends Fixture
                 'length'      => 8.0,
                 'categories'  => ['Hygiène'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
-                    'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
+                    'https://www.materielmedical.fr/37123-home_default/savon-doux-anios-haute-frequence-ph-neutre.jpg',
+                    'https://www.materielmedical.fr/57994-home_default/alcool-modifie-a-70-laboratoires-gilbert-ethylique.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -455,7 +447,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'HYG-002',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/36591-home_default/masque-de-protection-type-2r-bleu-3-plis.jpg',
                 'price'       => 15.99,
                 'promo_price' => null,
                 'stock'       => 200,
@@ -465,8 +457,8 @@ class ProductFixtures extends Fixture
                 'length'      => 18.0,
                 'categories'  => ['Hygiène'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
-                    'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
+                    'https://www.materielmedical.fr/51868-home_default/masque-3-plis-chirurgien-type-iir-bleu-fonce-avec-elastiques.jpg',
+                    'https://www.materielmedical.fr/54427-home_default/masques-de-protection-type-ii-jaune-3-plis-special-irm-boite-de-50.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -485,7 +477,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'HYG-003',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/43075-home_default/gants-d-examen-latex-non-steriles-non-poudres-boite-de-100.jpg',
                 'price'       => 12.99,
                 'promo_price' => 9.99,
                 'stock'       => 150,
@@ -495,8 +487,8 @@ class ProductFixtures extends Fixture
                 'length'      => 15.0,
                 'categories'  => ['Hygiène'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
-                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
+                    'https://www.materielmedical.fr/52114-home_default/gants-latex-non-poudres-non-steriles-boite-de-100-gants.jpg',
+                    'https://www.materielmedical.fr/55528-home_default/gants-dexamen-latex-non-poudres-non-steriles-avec-aloe-vera.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -515,7 +507,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'HYG-004',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1609587312208-cea54be969e7?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/39132-home_default/distributeur-automatique-de-savon-ou-gel-hydroalcoolique-joleti.jpg',
                 'price'       => 49.99,
                 'promo_price' => 39.99,
                 'stock'       => 45,
@@ -525,8 +517,7 @@ class ProductFixtures extends Fixture
                 'length'      => 28.0,
                 'categories'  => ['Hygiène'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
-                    'https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?w=400',
+                    'https://www.materielmedical.fr/43976-home_default/distributeur-pour-essuie-main-en-rouleau-maxi.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -545,7 +536,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'HYG-005',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/39934-home_default/blouses-visiteurs-non-tissees-bleues-taille-unique-sachet-de-10.jpg',
                 'price'       => 8.99,
                 'promo_price' => null,
                 'stock'       => 500,
@@ -555,8 +546,7 @@ class ProductFixtures extends Fixture
                 'length'      => 20.0,
                 'categories'  => ['Hygiène'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
-                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
+                    'https://www.materielmedical.fr/39934-home_default/blouses-visiteurs-non-tissees-bleues-taille-unique-sachet-de-10.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -575,7 +565,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'HYG-006',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/47085-home_default/charlottes-a-clip-non-tissees-blanches-sachet-de-100.jpg',
                 'price'       => 22.99,
                 'promo_price' => 17.99,
                 'stock'       => 120,
@@ -585,8 +575,7 @@ class ProductFixtures extends Fixture
                 'length'      => 22.0,
                 'categories'  => ['Hygiène'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
-                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
+                    'https://www.materielmedical.fr/39864-home_default/sur-chaussures-sans-semelles-bleues-sachet-de-100.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -605,7 +594,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'HYG-007',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1612538498456-e861df91d4d0?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/43066-home_default/gants-d-examen-nitrile-nitriskin-blue-evolution-non-poudres-boite-de-100.jpg',
                 'price'       => 18.99,
                 'promo_price' => 14.99,
                 'stock'       => 300,
@@ -615,8 +604,7 @@ class ProductFixtures extends Fixture
                 'length'      => 20.0,
                 'categories'  => ['Hygiène'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400',
-                    'https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400',
+                    'https://www.materielmedical.fr/43077-home_default/doigtiers-1-doigts-latex-roules-poudres-non-steriles-sachet-de-100.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -637,7 +625,7 @@ class ProductFixtures extends Fixture
             // ── RÉÉDUCATION (7) ───────────────────────────────────────────────────
             [
                 'sku'         => 'REED-001',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/40146-home_default/bande-adhesive-elastique-k-tape.jpg',
                 'price'       => 39.99,
                 'promo_price' => 34.99,
                 'stock'       => 40,
@@ -647,8 +635,8 @@ class ProductFixtures extends Fixture
                 'length'      => 60.0,
                 'categories'  => ['Rééducation'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400',
-                    'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
+                    'https://www.materielmedical.fr/53345-home_default/bande-de-taping-pour-kinesiologie-3b-scientific-3btape.jpg',
+                    'https://www.materielmedical.fr/54534-home_default/bande-adhesive-elastique-3m-adheban.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -667,7 +655,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'REED-002',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/32518-home_default/electrostimulateur-cefar-rehab-x2.jpg',
                 'price'       => 289.99,
                 'promo_price' => 249.99,
                 'stock'       => 7,
@@ -677,8 +665,7 @@ class ProductFixtures extends Fixture
                 'length'      => 50.0,
                 'categories'  => ['Rééducation'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
-                    'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
+                    'https://www.materielmedical.fr/41411-home_default/electrodes-pour-electrostimulateurs-cefar.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -697,7 +684,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'REED-003',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/56261-home_default/orthese-poignet-et-pouce-lanaform.jpg',
                 'price'       => 74.99,
                 'promo_price' => null,
                 'stock'       => 22,
@@ -707,8 +694,7 @@ class ProductFixtures extends Fixture
                 'length'      => 30.0,
                 'categories'  => ['Rééducation'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
-                    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+                    'https://www.materielmedical.fr/36137-home_default/echarpe-multiusage-actimove-sling.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -727,7 +713,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'REED-004',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/37322-home_default/plateau-de-freeman-winelec-rond.jpg',
                 'price'       => 54.99,
                 'promo_price' => 44.99,
                 'stock'       => 15,
@@ -737,8 +723,7 @@ class ProductFixtures extends Fixture
                 'length'      => 25.0,
                 'categories'  => ['Rééducation'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400',
-                    'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+                    'https://www.materielmedical.fr/37317-home_default/planche-d-equilibre-winelec-rectangulaire.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -757,7 +742,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'REED-005',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/53717-home_default/pedalier-d-exercice-pliant-euromedis.jpg',
                 'price'       => 119.99,
                 'promo_price' => 99.99,
                 'stock'       => 10,
@@ -767,8 +752,8 @@ class ProductFixtures extends Fixture
                 'length'      => 45.0,
                 'categories'  => ['Rééducation'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
-                    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+                    'https://www.materielmedical.fr/60098-home_default/pedalier-d-exercice-elliptique-cubii-go.jpg',
+                    'https://www.materielmedical.fr/49906-home_default/velo-pliable-care-striale-sv-317.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -787,7 +772,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'REED-006',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/49700-home_default/appareil-de-reeducation-sissel-handgrip-pour-la-main.jpg',
                 'price'       => 34.99,
                 'promo_price' => null,
                 'stock'       => 50,
@@ -797,8 +782,7 @@ class ProductFixtures extends Fixture
                 'length'      => 20.0,
                 'categories'  => ['Rééducation'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1519505907962-0a6cb0167c73?w=400',
-                    'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
+                    'https://www.materielmedical.fr/32422-home_default/dynamometre-de-collin-adulte.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -817,7 +801,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'REED-007',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/51689-home_default/attelle-a-depression-cir-medical-bras-complet-adulte-ou-jambe-enfant.jpg',
                 'price'       => 179.99,
                 'promo_price' => 149.99,
                 'stock'       => 6,
@@ -827,9 +811,8 @@ class ProductFixtures extends Fixture
                 'length'      => 55.0,
                 'categories'  => ['Rééducation'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400',
-                    'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400',
-                    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+                    'https://www.materielmedical.fr/51754-home_default/attelle-a-depression-cir-medical-avant-bras-adulte-ou-bras-enfant.jpg',
+                    'https://www.materielmedical.fr/56441-home_default/attelle-modelable-sam-splint-1-rouleau.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -850,7 +833,7 @@ class ProductFixtures extends Fixture
             // ── OPTIQUE (5) ───────────────────────────────────────────────────────
             [
                 'sku'         => 'OPT-001',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1602034987685-ac6300eb7be1?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/42825-home_default/ophtalmoscope-heine-mini-3000-led.jpg',
                 'price'       => 89.99,
                 'promo_price' => 74.99,
                 'stock'       => 20,
@@ -860,8 +843,8 @@ class ProductFixtures extends Fixture
                 'length'      => 18.0,
                 'categories'  => ['Optique'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
-                    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400',
+                    'https://www.materielmedical.fr/40200-home_default/ophtalmoscope-gima-led.jpg',
+                    'https://www.materielmedical.fr/37508-home_default/ophtalmoscope-heine-mini-3000-led-avec-poignee-rechargeable.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -880,7 +863,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'OPT-002',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/16218-home_default/lunettes-dr-frenzel-recherche-de-nystagmus.jpg',
                 'price'       => 19.99,
                 'promo_price' => null,
                 'stock'       => 90,
@@ -890,8 +873,7 @@ class ProductFixtures extends Fixture
                 'length'      => 14.0,
                 'categories'  => ['Optique'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1602034987685-ac6300eb7be1?w=400',
-                    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400',
+                    'https://www.materielmedical.fr/34060-home_default/lunettes-de-frenzel-pour-nystagmus-avec-batterie-integree.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -910,7 +892,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'OPT-003',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/57070-home_default/coffret-otoscope-et-ophtalmoscope-omni-3000-fibre-optique.jpg',
                 'price'       => 149.99,
                 'promo_price' => 119.99,
                 'stock'       => 12,
@@ -920,8 +902,7 @@ class ProductFixtures extends Fixture
                 'length'      => 35.0,
                 'categories'  => ['Optique'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
-                    'https://images.unsplash.com/photo-1602034987685-ac6300eb7be1?w=400',
+                    'https://www.materielmedical.fr/55043-home_default/ophtalmoscope-devascope-fibre-optique-led-25v.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -940,7 +921,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'OPT-004',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/48125-home_default/flacon-de-solution-lave-oeil.jpg',
                 'price'       => 29.99,
                 'promo_price' => 24.99,
                 'stock'       => 60,
@@ -950,8 +931,8 @@ class ProductFixtures extends Fixture
                 'length'      => 8.0,
                 'categories'  => ['Optique'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
-                    'https://images.unsplash.com/photo-1602034987685-ac6300eb7be1?w=400',
+                    'https://www.materielmedical.fr/34922-home_default/solution-saline-sterile-pour-le-kit-pour-lavage-oculaire-500-ml.jpg',
+                    'https://www.materielmedical.fr/28198-home_default/kit-pour-lavage-oculaire.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -970,7 +951,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'OPT-005',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1508296695146-257a814070b4?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/42613-home_default/tonometre-de-schioetz-cadran-incline.jpg',
                 'price'       => 249.99,
                 'promo_price' => null,
                 'stock'       => 4,
@@ -980,8 +961,7 @@ class ProductFixtures extends Fixture
                 'length'      => 40.0,
                 'categories'  => ['Optique'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400',
-                    'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400',
+                    'https://www.materielmedical.fr/42615-home_default/cache-oeil-a-trous-pour-echelle-optometrique.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -1002,7 +982,7 @@ class ProductFixtures extends Fixture
             // ── CONFORT (8) ───────────────────────────────────────────────────────
             [
                 'sku'         => 'CONF-001',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/50154-home_default/fauteuil-releveur-easy-ii-2-moteurs.jpg',
                 'price'       => 319.99,
                 'promo_price' => 279.99,
                 'stock'       => 8,
@@ -1012,8 +992,8 @@ class ProductFixtures extends Fixture
                 'length'      => 80.0,
                 'categories'  => ['Confort'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
-                    'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?w=400',
+                    'https://www.materielmedical.fr/50168-home_default/fauteuil-releveur-thelma.jpg',
+                    'https://www.materielmedical.fr/31221-home_default/fauteuil-de-repos-electrique-vog-medical-cerisy.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -1032,7 +1012,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'CONF-002',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/51317-home_default/coussin-d-assise-coccygien-orthia.jpg',
                 'price'       => 69.99,
                 'promo_price' => 59.99,
                 'stock'       => 35,
@@ -1042,8 +1022,7 @@ class ProductFixtures extends Fixture
                 'length'      => 60.0,
                 'categories'  => ['Confort'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
-                    'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?w=400',
+                    'https://www.materielmedical.fr/51313-home_default/coussin-d-assise-prostatique-orthia.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -1062,7 +1041,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'CONF-003',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/51764-home_default/oreiller-a-memoire-de-forme-orthia-evolution.jpg',
                 'price'       => 44.99,
                 'promo_price' => null,
                 'stock'       => 50,
@@ -1072,8 +1051,8 @@ class ProductFixtures extends Fixture
                 'length'      => 50.0,
                 'categories'  => ['Confort'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
-                    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400',
+                    'https://www.materielmedical.fr/50131-home_default/oreiller-ergonomique-tempur-symphony-smartcool.jpg',
+                    'https://www.materielmedical.fr/55522-home_default/oreiller-ergonomique-memocervical-biosynex-double-vague.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -1092,7 +1071,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'CONF-004',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/48409-home_default/chauffe-matelas-thermique-modele-ub30-130-x-75-cm.jpg',
                 'price'       => 89.99,
                 'promo_price' => 74.99,
                 'stock'       => 14,
@@ -1102,8 +1081,8 @@ class ProductFixtures extends Fixture
                 'length'      => 40.0,
                 'categories'  => ['Confort'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
-                    'https://images.unsplash.com/photo-1586511925558-a4c6376fe65f?w=400',
+                    'https://www.materielmedical.fr/58533-home_default/coussin-chauffant-polaire-hk-126-xxl.jpg',
+                    'https://www.materielmedical.fr/58194-home_default/coussin-chauffant-shk-28-sanitas.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -1122,7 +1101,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'CONF-005',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/39579-home_default/lit-medical-a-1-articulation.jpg',
                 'price'       => 159.99,
                 'promo_price' => 129.99,
                 'stock'       => 9,
@@ -1132,9 +1111,7 @@ class ProductFixtures extends Fixture
                 'length'      => 70.0,
                 'categories'  => ['Confort'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
-                    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
-                    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400',
+                    'https://www.materielmedical.fr/48310-home_default/sur-matelas-a-air-invacare-alternating-avec-compresseur.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -1153,7 +1130,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'CONF-006',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/49647-home_default/bande-de-compression-hartmann-extensa-plus.jpg',
                 'price'       => 24.99,
                 'promo_price' => 19.99,
                 'stock'       => 70,
@@ -1163,8 +1140,7 @@ class ProductFixtures extends Fixture
                 'length'      => 30.0,
                 'categories'  => ['Confort'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=400',
-                    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
+                    'https://www.materielmedical.fr/54546-home_default/bande-de-compression-elastique-lr-velpeau-press.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -1183,7 +1159,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'CONF-007',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1519824145371-296894a0daa9?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/59504-home_default/bande-de-compression-gel-chaud-froid-lombaire.jpg',
                 'price'       => 49.99,
                 'promo_price' => null,
                 'stock'       => 28,
@@ -1193,8 +1169,7 @@ class ProductFixtures extends Fixture
                 'length'      => 35.0,
                 'categories'  => ['Confort'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-                    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
+                    'https://www.materielmedical.fr/15676-home_default/ceinture-de-massage-chauffante-dos-et-ventre-terraillon.jpg',
                 ],
                 'translations' => [
                     'fr' => [
@@ -1213,7 +1188,7 @@ class ProductFixtures extends Fixture
             ],
             [
                 'sku'         => 'CONF-008',
-                'thumbnail'   => 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
+                'thumbnail'   => 'https://www.materielmedical.fr/53978-home_default/siege-de-massage-shiatsu-beurer-mg-202.jpg',
                 'price'       => 199.99,
                 'promo_price' => 169.99,
                 'stock'       => 11,
@@ -1223,8 +1198,8 @@ class ProductFixtures extends Fixture
                 'length'      => 60.0,
                 'categories'  => ['Confort'],
                 'images'      => [
-                    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
-                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                    'https://www.materielmedical.fr/58155-home_default/appareil-de-massage-a-infrarouge-beurer-mg-40.jpg',
+                    'https://www.materielmedical.fr/55207-home_default/pistolet-de-massage-beurer-mg-79-sensitive.jpg',
                 ],
                 'translations' => [
                     'fr' => [

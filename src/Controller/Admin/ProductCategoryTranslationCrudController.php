@@ -36,9 +36,10 @@ class ProductCategoryTranslationCrudController extends AbstractCrudController
                 ->setChoices([
                     'Français' => 'fr',
                     'English' => 'en',
-                    'Español' => 'es',
-                    'Deutsch' => 'de',
-                ]),
+                    'עברית' => 'he',
+                    '中文' => 'zh',
+                ])
+                ->renderAsBadges(),
 
             TextField::new('title', 'Titre de la catégorie'),
             

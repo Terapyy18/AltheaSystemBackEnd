@@ -36,6 +36,8 @@ class ProductTranslationCrudController extends AbstractCrudController
                 ->setChoices([
                     'Français' => 'fr',
                     'English' => 'en',
+                    'עברית' => 'he',
+                    '中文' => 'zh',
                 ])
                 ->renderAsBadges(),
 

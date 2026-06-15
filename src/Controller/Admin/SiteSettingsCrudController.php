@@ -34,7 +34,7 @@ class SiteSettingsCrudController extends AbstractCrudController
             ->setNumOfRows(4);
         yield TextareaField::new('valueEn', 'Texte (EN)')
             ->setNumOfRows(4);
-        yield TextareaField::new('valueAr', 'Texte (AR — arabe, RTL)')
+        yield TextareaField::new('valueHe', 'Texte (HE — hébreu, RTL)')
             ->setRequired(false)
             ->setNumOfRows(4)
             ->setHelp('Langue droite-à-gauche. Laisser vide si non traduit.')

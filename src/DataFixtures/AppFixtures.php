@@ -3,11 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Addresses;
-use App\Entity\ItemsOrder;
-use App\Entity\Order;
-use App\Entity\Product;
 use App\Entity\User;
-use App\Repository\ProductRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -17,7 +13,6 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $hasher,
-        private readonly ProductRepository $productRepository,
     ) {}
 
     public function getDependencies(): array
@@ -27,13 +22,8 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $products  = $this->productRepository->findAll();
-        $users     = $this->createUsers($manager);
-        $addresses = $this->createAddresses($users, $manager);
-
-        $manager->flush();
-
-        $this->createOrders($products, $users, $addresses, $manager);
+        $users = $this->createUsers($manager);
+        $this->createAddresses($users, $manager);
 
         $manager->flush();
     }
@@ -95,110 +85,5 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         }
 
         return $addresses;
-    }
-
-    private function createOrders(
-        array $products,
-        array $users,
-        array $addresses,
-        ObjectManager $manager
-    ): void {
-        $now   = new \DateTime();
-        $month = (int) $now->format('n');
-        $year  = (int) $now->format('Y');
-
-        for ($ago = 11; $ago >= 1; $ago--) {
-            $m = $month - $ago;
-            $y = $year;
-            if ($m <= 0) { $m += 12; $y -= 1; }
-
-            $count = random_int(8 + $ago, 18 + $ago);
-            for ($o = 0; $o < $count; $o++) {
-                $day  = random_int(1, 28);
-                $date = new \DateTime(sprintf('%d-%02d-%02d %02d:00:00', $y, $m, $day, random_int(8, 20)));
-                $this->buildOrder($products, $users, $addresses, $date, 'received', $manager);
-            }
-        }
-
-        $cutoff = (int) $now->format('j') - 7;
-        if ($cutoff >= 1) {
-            for ($d = 1; $d <= $cutoff; $d++) {
-                $count = random_int(2, 5);
-                for ($o = 0; $o < $count; $o++) {
-                    $date = new \DateTime(sprintf('%d-%02d-%02d %02d:00:00', $year, $month, $d, random_int(8, 20)));
-                    $this->buildOrder($products, $users, $addresses, $date, 'paid', $manager);
-                }
-            }
-        }
-
-        for ($i = 6; $i >= 0; $i--) {
-            $base  = new \DateTime("-$i days midnight");
-            $count = random_int(3, 8);
-            for ($o = 0; $o < $count; $o++) {
-                $date = clone $base;
-                $date->modify('+' . random_int(0, 86399) . ' seconds');
-                $this->buildOrder($products, $users, $addresses, $date, 'paid', $manager);
-            }
-        }
-    }
-
-    private function buildOrder(
-        array $products,
-        array $users,
-        array $addresses,
-        \DateTime $date,
-        string $status,
-        ObjectManager $manager
-    ): void {
-        $user    = $users[array_rand($users)];
-        $address = $addresses[array_rand($addresses)];
-
-        $order = new Order();
-        $order->setStatus($status);
-        $order->setCreatedAt($date);
-        $order->setUser($user);
-        $order->setAddresses($address);
-
-        if (in_array($status, ['paid', 'received'], true)) {
-            $paidAt = clone $date;
-            $paidAt->modify('+' . random_int(1, 30) . ' minutes');
-            $order->setPayedAt($paidAt);
-        }
-
-        if ($status === 'received') {
-            $shippedAt = clone $date;
-            $shippedAt->modify('+1 day');
-            $order->setShippedAt($shippedAt);
-
-            $receivedAt = clone $shippedAt;
-            $receivedAt->modify('+' . random_int(2, 5) . ' days');
-            $order->setReceivedAt($receivedAt);
-        }
-
-        $lineCount = random_int(1, 3);
-        $total     = 0.0;
-        $picked    = [];
-
-        for ($l = 0; $l < $lineCount; $l++) {
-            $product = $products[array_rand($products)];
-            if (in_array($product, $picked, true)) {
-                continue;
-            }
-            $picked[] = $product;
-
-            $qty = random_int(1, 3);
-
-            $item = new ItemsOrder();
-            $item->setOrder($order);
-            $item->setProduct($product);
-            $item->setQuantity($qty);
-            $item->setPrice($product->getPrice());
-            $manager->persist($item);
-
-            $total += $product->getPrice() * $qty;
-        }
-
-        $order->setTotalPrice(round($total, 2));
-        $manager->persist($order);
     }
 }
