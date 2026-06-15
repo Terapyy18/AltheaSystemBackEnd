@@ -99,5 +99,12 @@ class CarouselSlide
     #[Groups(['carousel:read'])]
     public function getProductId(): ?int { return $this->product?->getId(); }
 
+    /**
+     * Image (thumbnail) du produit lié, exposée pour servir d'image de fond du slide
+     * lorsqu'aucune image n'a été uploadée explicitement (imageFilename vide).
+     */
+    #[Groups(['carousel:read'])]
+    public function getProductThumbnail(): ?string { return $this->product?->getThumbnail(); }
+
     public function __toString(): string { return $this->title ?? 'Slide'; }
 }
