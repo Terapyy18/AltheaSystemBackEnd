@@ -1,39 +1,85 @@
-# AltheaSystemBackEnd
-AltheaSystem backend
+# Althea — Backend / API
 
-## Stripe webhook — local testing
+API REST de **Althea**, plateforme e-commerce **B2B de matériel médical** pour les professionnels de santé.
 
-The webhook endpoint is exposed at `POST /api/webhooks/stripe` and routes events through `StripeEventDispatcher` to the matching domain service:
+Cette application expose l'API consommée par le frontend Next.js (catalogue, recherche, commandes, paiement Stripe) ainsi qu'un back-office d'administration.
 
-| Stripe event                       | Handler                                  | Effect                                                    |
-|------------------------------------|------------------------------------------|-----------------------------------------------------------|
-| `checkout.session.completed`       | `OrderService::handleSessionCompleted`   | Creates the Order, decrements stock, sends confirmation.  |
-| `checkout.session.expired`         | `OrderService::handleSessionExpired`     | Emails the user a "resume your order" link.               |
-| `payment_intent.payment_failed`    | `OrderService::handlePaymentFailed`      | Marks the order `Echec paiement`, emails the user.        |
-| `charge.refunded`                  | `RefundService::handleChargeRefunded`    | Restores stock, marks `Remboursée`, emails the user.      |
+## Stack
 
-Any other event is logged at `info` and ignored.
+- **Symfony 7.4** + **API Platform 4.3** (PHP 8.2+)
+- **PostgreSQL 16**
+- **JWT** (lexik) + **2FA email** pour les admins (scheb)
+- **Stripe** (Checkout Sessions + Webhooks)
+- **EasyAdmin 5** (back-office)
+- **Dompdf** (factures), **Symfony Mailer** (emails transactionnels)
 
-### Stripe CLI
+## Démarrage
 
 ```bash
-# 1. Forward live webhook traffic to your local server.
-#    The command prints a `whsec_...` value — copy it into STRIPE_WEBHOOK_SECRET
-#    in your .env.local, then restart Symfony so it picks it up.
-stripe listen --forward-to localhost:8000/api/webhooks/stripe
-
-# 2. In a second terminal, fire each event type:
-stripe trigger checkout.session.completed
-stripe trigger checkout.session.expired
-stripe trigger payment_intent.payment_failed
-stripe trigger charge.refunded
+composer install
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load     # données de démo (purge la base)
+symfony server:start                       # http://127.0.0.1:8000
 ```
 
-### What to expect in the logs
+Le frontend consomme l'API au format JSON-LD / Hydra sur `http://127.0.0.1:8000/api`.
 
-Every handler emits structured logs with `stripe_session_id`, `stripe_payment_intent_id`, and (when relevant) `order_id`. Idempotent no-ops are logged at `info` so re-delivered events are visible without being treated as errors. Stock mismatches at webhook time (price or quantity drift) log at `alert` and trigger an admin notification when `ADMIN_EMAIL` is configured.
+### Variables d'environnement (`.env`)
 
-### HTTP response policy
+| Clé | Description |
+|---|---|
+| `DATABASE_URL` | Connexion PostgreSQL (DB `ALTHEA`) |
+| `JWT_SECRET_KEY` | Clé JWT |
+| `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | Paiement Stripe |
+| `MAILER_DSN` / `MAILER_FROM` | Envoi d'emails |
+| `FRONTEND_URL` / `ADMIN_EMAIL` | URL du front, email admin |
 
-- `400` only for an invalid Stripe signature or malformed payload — Stripe stops retrying.
-- `200` for everything else, including business-level failures. The reason is in the logs, never in the response.
+## Liens utiles
+
+| Ressource | URL |
+|---|---|
+| Documentation API (API Platform) | http://127.0.0.1:8000/api |
+| Back-office (EasyAdmin) | http://127.0.0.1:8000/admin |
+| Dashboard stats admin | http://127.0.0.1:8000/admin/stats |
+
+Compte admin de démo (via fixtures) : `theodumontet.pro@gmail.com` / `demo1234`.
+
+## Endpoints principaux
+
+| Endpoint | Auth | Usage |
+|---|---|---|
+| `GET /api/products` | public | Catalogue |
+| `GET /api/search` | public | Recherche serveur (facettes + tris) |
+| `POST /api/login` | public | Authentification JWT |
+| `POST /api/users` | public | Inscription |
+| `GET /api/orders` | JWT | Historique de commandes |
+| `POST /api/checkout/session` | JWT | Crée une session Stripe Checkout |
+| `POST /api/webhooks/stripe` | signature Stripe | Webhooks paiement |
+
+> L'`access_control` fonctionne en **whitelist** : les routes publiques sont listées explicitement, puis `^/api` exige une authentification.
+
+## Webhooks Stripe (test local)
+
+Le endpoint `POST /api/webhooks/stripe` route les événements via `StripeEventDispatcher` :
+
+| Événement Stripe | Effet |
+|---|---|
+| `checkout.session.completed` | Crée la commande, décrémente le stock, envoie la confirmation + facture |
+| `checkout.session.expired` | Email « reprendre votre commande » |
+| `payment_intent.payment_failed` | Commande `payment_failed`, email d'échec |
+| `charge.refunded` | Restaure le stock, commande `refunded`, email |
+
+```bash
+# Forward le trafic webhook vers le serveur local (copier le whsec_... dans STRIPE_WEBHOOK_SECRET)
+stripe listen --forward-to localhost:8000/api/webhooks/stripe
+
+# Déclencher un événement
+stripe trigger checkout.session.completed
+```
+
+**Politique de réponse HTTP** : `400` uniquement pour une signature invalide ou un payload malformé (Stripe arrête de réessayer) ; `200` pour tout le reste, y compris les échecs métier (la raison est dans les logs).
+
+## Liens utiles
+
+- Frontend : voir [`../AltheaFrontEnd`](../AltheaFrontEnd)
+- Guide projet détaillé : [`../CLAUDE.md`](../CLAUDE.md)
